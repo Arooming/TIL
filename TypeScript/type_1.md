@@ -40,7 +40,7 @@
 
 ## 📍 TS 컴파일 과정
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/15a14f24-c5b8-4c6c-88e2-d8518a34d007/Untitled.png)
+![img](https://file.notion.so/f/s/15a14f24-c5b8-4c6c-88e2-d8518a34d007/Untitled.png?id=d64a0386-b61e-411b-bfc5-6a91dce3b4e9&table=block&spaceId=874b90e7-17be-4b1d-8d43-cdea8ef64847&expirationTimestamp=1687635118330&signature=_srC0Z_faNQr-czV05QckHeHQJlOGv6Ymu7--GmL3WA&downloadName=Untitled.png)
 
 - 특이하게도 TS의 컴파일 과정에서는 바이트 코드를 반환하지 않고, `타입 검사를 마친 JS 코드` 를 반환함!
 - 반환된 JS 코드는 타입 검사를 통과한 코드이기 때문에, 일반적인 JS 코드보다 안전함.
