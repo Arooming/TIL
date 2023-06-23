@@ -40,7 +40,7 @@
 
 ## 📍 TS 컴파일 과정
 
-![img](https://ts.winterlood.com/d67c7b28-c191-46ee-9bdc-2ae8643c2028)
+![img](https://github.com/Arooming/TIL/blob/main/TypeScript/img/ts.png)
 
 - 특이하게도 TS의 컴파일 과정에서는 바이트 코드를 반환하지 않고, `타입 검사를 마친 JS 코드` 를 반환함!
 - 반환된 JS 코드는 타입 검사를 통과한 코드이기 때문에, 일반적인 JS 코드보다 안전함.
