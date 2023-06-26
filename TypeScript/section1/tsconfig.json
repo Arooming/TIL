@@ -7,7 +7,7 @@
     // 컴파일 결과가 'dist' 폴더에 생성됨
     "outDir": "dist",
     // 타입 검사를 엄격할 지 여부를 관리
-    "strict": false,
+    "strict": true,
     //  ts가 각각의 파일을 어떤 모듈로 감지할 것인지 정해주는 옵션
     "moduleDetection": "force"
   },
