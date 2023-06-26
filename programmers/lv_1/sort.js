@@ -2,7 +2,6 @@
 // sort에 함수식을 활용하면 내림차순으로 정렬 가능
 
 // 정수 내림차순으로 배치하기
-
 function solution(n) {
   let intToStr = n.toString();
   return parseInt([...intToStr].sort().reverse().join(""));
