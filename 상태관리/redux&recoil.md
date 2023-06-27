@@ -167,6 +167,4 @@ function FontButton() {
 
 [Redux(리덕스)란? (상태 관리 라이브러리) - 하나몬](https://hanamon.kr/redux란-리덕스-상태-관리-라이브러리/)
 
----
-
 [주요 개념 | Recoil](https://recoiljs.org/ko/docs/introduction/core-concepts)
