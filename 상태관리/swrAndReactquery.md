@@ -86,7 +86,7 @@ export default App;
 
 <br />
 
-### Provider
+### 1. Provider
 
 🔥 `React Query`
 
@@ -98,7 +98,7 @@ Provider로 컴포넌트를 감싸지 않을 경우, 에러 발생함.
 
 <br />
 
-### Fetcher
+### 2. Fetcher
 
 > 모두 두 번째 인자로 fetcher를 받음.
 > 
@@ -117,7 +117,7 @@ fetcher의 인자로 useSWR의 첫 번째 인자를 넘겨줌.
 
 <br />
 
-### Mutation
+### 3. Mutation
 
 🔥 `React Query`
 
@@ -129,7 +129,7 @@ useSWR()을 통해 받아온 데이터를 클라이언트 사이드에서 변형
 
 <br />
 
-### Selectors
+### 4. Selectors
 
 🔥 `React Query`
 
@@ -141,7 +141,7 @@ select를 이용해 데이터를 가공할 수 있음.
 
 <br />
 
-### Offline Mutation
+### 5. Offline Mutation
 
 🔥 `React Query`
 
@@ -153,7 +153,7 @@ API를 멈췄다가 다시 시도하기 때문에, 서버 데이터를 변경하
 
 <br />
 
-### Auto Garbage Collection
+### 6. Auto Garbage Collection
 
 🔥 `React Query`
 
