@@ -1,31 +1,29 @@
-function solution(sizes) {
-  let width = [];
-  let height = [];
+function solution(answers) {
+  const answerA = [1, 2, 3, 4, 5];
+  const answerB = [2, 1, 2, 3, 2, 4, 2, 5];
+  const answerC = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
 
-  for (let i = 0; i < sizes.length; i++) {
-    sizes[i][0] > sizes[i][1]
-      ? (sizes[i] = [sizes[i][0], sizes[i][1]])
-      : (sizes[i] = [sizes[i][1], sizes[i][0]]);
+  const result = [0, 0, 0];
 
-    const max = sizes[i][0];
-    const min = sizes[i][1];
+  let finalAnswer = [];
 
-    width.push(max);
-    height.push(min);
-  }
+  answers.map((answer, i) =>
+    answer === answerA[i % answerA.length] ? result[0]++ : result[0]
+  );
+  answers.map((answer, i) =>
+    answer === answerB[i % answerB.length] ? result[1]++ : result[1]
+  );
+  answers.map((answer, i) =>
+    answer === answerC[i % answerC.length] ? result[2]++ : result[2]
+  );
 
-  width.sort((a, b) => b - a);
-  height.sort((a, b) => b - a);
+  let max = Math.max(result[0], result[1], result[2]);
 
-  return width[0] * height[0];
+  max === result[0] && finalAnswer.push(1);
+  max === result[1] && finalAnswer.push(2);
+  max === result[2] && finalAnswer.push(3);
+
+  return finalAnswer;
 }
-
-console.log(
-  solution([
-    [10, 7],
-    [12, 3],
-    [8, 15],
-    [14, 7],
-    [5, 15],
-  ])
-);
+console.log(solution([1, 3, 2, 4, 2]));
+console.log(solution([1, 2, 3, 4, 5]));
