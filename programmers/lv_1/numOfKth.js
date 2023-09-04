@@ -1,5 +1,19 @@
 // K번째 수
 function solution(array, commands) {
+  var answer = [];
+
+  for (let i = 0; i < commands.length; i++) {
+    let newArr = array
+      .slice(commands[i][0] - 1, commands[i][1])
+      .sort((a, b) => a - b);
+    answer.push(newArr[commands[i][2] - 1]);
+  }
+
+  return answer;
+}
+
+/*
+function solution(array, commands) {
   let answer = [];
   // spice(n번째 숫자, 1): n번째 숫자/문자만 추출 가능!!
   // sort() 메소드 활용 시, 오름차순과 내림차순 알맞게 표시하기 -> sort((a, b) => a - b) 이런 식으로!
@@ -9,6 +23,7 @@ function solution(array, commands) {
 
   return answer;
 }
+*/
 
 console.log(
   solution(
