@@ -1,5 +1,14 @@
 // 최소 직사각형
 function solution(sizes) {
+  let newArr = sizes.map((i) => (i[0] > i[1] ? [i[0], i[1]] : [i[1], i[0]]));
+  let width = newArr.map((w) => w[0]).sort((a, b) => b - a);
+  let height = newArr.map((h) => h[1]).sort((a, b) => b - a);
+
+  return width[0] * height[0];
+}
+
+/*
+function solution(sizes) {
   let width = [];
   let height = [];
 
@@ -16,6 +25,7 @@ function solution(sizes) {
 
   return width[0] * height[0];
 }
+*/
 
 console.log(
   solution([
