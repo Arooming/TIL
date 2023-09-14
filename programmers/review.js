@@ -1,31 +1,31 @@
-function solution(answers) {
-  var counter = [0, 0, 0];
-  let a = [1, 2, 3, 4, 5];
-  let b = [2, 1, 2, 3, 2, 4, 2, 5];
-  let c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
+function solution(n, lost, reserve) {
+  var answer = 0;
 
-  let answer = [];
+  let lostStud = lost
+    .sort((a, b) => a - b)
+    .filter((lost) => !reserve.includes(lost));
 
-  for (let i = 0; i < answers.length; i++) {
-    if (answers[i] === a[i % a.length]) {
-      counter[0]++;
-    }
-    if (answers[i] === b[i % b.length]) {
-      counter[1]++;
-    }
-    if (answers[i] === c[i % c.length]) {
-      counter[2]++;
-    }
-  }
+  let reserveStud = reserve
+    .sort((a, b) => a - b)
+    .filter((reserve) => !lost.includes(reserve));
 
-  for (let j = 0; j < counter.length; j++) {
-    if (Math.max(counter[0], counter[1], counter[2]) === counter[j]) {
-      answer.push(j + 1);
-    }
-  }
+  let finalLostStud = lostStud.filter((lost) => {
+    let canLendStud = reserveStud.find(
+      (canReserve) => Math.abs(lost - canReserve) === 1
+    );
 
-  return answer; 
+    if (!canLendStud) return lost;
+
+    reserveStud = reserveStud.filter(
+      (canReserve) => canReserve !== canLendStud
+    );
+  });
+
+  answer = n - finalLostStud.length;
+
+  return answer;
 }
 
-console.log(solution([1, 2, 3, 4, 5]));
-console.log(solution([1, 3, 2, 4, 2]));
+console.log(solution(5, [2, 4], [1, 3, 5]));
+console.log(solution(5, [2, 4], [3]));
+console.log(solution(3, [3], [1]));
