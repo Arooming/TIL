@@ -1,0 +1,23 @@
+// 올바른 괄호
+function solution(s) {
+  let stack = [];
+
+  // for (let i in s)로 반복문 돌리면 시간초과 발생!!
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      stack.push(s[i]);
+    } else {
+      if (stack.length === 0) {
+        return false;
+      }
+      stack.pop();
+    }
+  }
+
+  return stack.length === 0;
+}
+
+console.log(solution("()()"));
+console.log(solution("(())()"));
+console.log(solution(")()("));
+console.log(solution("(()("));
