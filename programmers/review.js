@@ -1,25 +1,18 @@
-function solution(progresses, speeds) {
-  var answer = [];
-  let counter = 1;
+// 전화번호 목록
+function solution(phone_book) {
+  phone_book.sort();
 
-  const tasks = progresses.map((prog) => 100 - prog);
-  let days = speeds.map((speed, i) => Math.ceil(tasks[i] / speed));
-
-  let maxDay = days[0];
-
-  for (let i = 1; i < days.length; i++) {
-    if (maxDay < days[i]) {
-      answer.push(counter);
-      maxDay = days[i];
-      counter = 1;
-    } else {
-      counter += 1;
+  for (let i = 0; i < phone_book.length - 1; i++) {
+    if (
+      phone_book[i] === phone_book[i + 1].substring(0, phone_book[i].length)
+    ) {
+      return false;
     }
   }
-  answer.push(counter);
 
-  return answer;
+  return true;
 }
 
-console.log(solution([93, 30, 55], [1, 30, 5]));
-console.log(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]));
+console.log(solution(["119", "97674223", "1195524421"]));
+console.log(solution(["123", "456", "789"]));
+console.log(solution(["12", "123", "1235", "567", "88"]));
