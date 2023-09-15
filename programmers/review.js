@@ -1,31 +1,25 @@
-function solution(n, lost, reserve) {
-  var answer = 0;
+function solution(progresses, speeds) {
+  var answer = [];
+  let counter = 1;
 
-  let lostStud = lost
-    .sort((a, b) => a - b)
-    .filter((lost) => !reserve.includes(lost));
+  const tasks = progresses.map((prog) => 100 - prog);
+  let days = speeds.map((speed, i) => Math.ceil(tasks[i] / speed));
 
-  let reserveStud = reserve
-    .sort((a, b) => a - b)
-    .filter((reserve) => !lost.includes(reserve));
+  let maxDay = days[0];
 
-  let finalLostStud = lostStud.filter((lost) => {
-    let canLendStud = reserveStud.find(
-      (canReserve) => Math.abs(lost - canReserve) === 1
-    );
-
-    if (!canLendStud) return lost;
-
-    reserveStud = reserveStud.filter(
-      (canReserve) => canReserve !== canLendStud
-    );
-  });
-
-  answer = n - finalLostStud.length;
+  for (let i = 1; i < days.length; i++) {
+    if (maxDay < days[i]) {
+      answer.push(counter);
+      maxDay = days[i];
+      counter = 1;
+    } else {
+      counter += 1;
+    }
+  }
+  answer.push(counter);
 
   return answer;
 }
 
-console.log(solution(5, [2, 4], [1, 3, 5]));
-console.log(solution(5, [2, 4], [3]));
-console.log(solution(3, [3], [1]));
+console.log(solution([93, 30, 55], [1, 30, 5]));
+console.log(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]));
