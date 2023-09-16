@@ -1,8 +1,6 @@
 function solution(n, lost, reserve) {
-  var answer = 0;
-
   // 1. 도난 당하고, 여벌 옷이 없는 사람 - 옷을 빌려야 함
-  let lostStud = lost
+  const lostStud = lost
     .sort((a, b) => a - b)
     .filter((lost) => !reserve.includes(lost));
 
@@ -12,7 +10,7 @@ function solution(n, lost, reserve) {
     .filter((reserve) => !lost.includes(reserve));
 
   // 3. 체육복을 빌리지 못해, 수업에 참여할 수 없는 학생 (최종)
-  let finalLost = lostStud.filter((lost) => {
+  const finalLost = lostStud.filter((lost) => {
     // 체급차이가 1이라 체육복을 빌려줄 수 있는 학생
     let canLendStud = reserveStud.find(
       (canReserve) => Math.abs(lost - canReserve) === 1
@@ -27,9 +25,7 @@ function solution(n, lost, reserve) {
     );
   });
 
-  answer = n - finalLost.length;
-
-  return answer;
+  return n - finalLost.length;
 }
 
 console.log(solution(5, [2, 4], [1, 3, 5]));
