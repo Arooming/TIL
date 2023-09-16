@@ -1,18 +1,25 @@
-// 전화번호 목록
-function solution(phone_book) {
-  phone_book.sort();
+function solution(n, lost, reserve) {
+  const lostStud = lost
+    .sort((a, b) => a - b)
+    .filter((lost) => !reserve.includes(lost));
 
-  for (let i = 0; i < phone_book.length - 1; i++) {
-    if (
-      phone_book[i] === phone_book[i + 1].substring(0, phone_book[i].length)
-    ) {
-      return false;
-    }
-  }
+  let reserveStud = reserve
+    .sort((a, b) => a - b)
+    .filter((reserve) => !lost.includes(reserve));
 
-  return true;
+  const finalLost = lostStud.filter((lost) => {
+    let canLendStud = reserveStud.find(
+      (reserve) => Math.abs(lost - reserve) === 1
+    );
+
+    if (!canLendStud) return lost;
+
+    reserveStud = reserveStud.filter((reserve) => (reserve -= canLendStud));
+  });
+
+  return n - finalLost.length;
 }
 
-console.log(solution(["119", "97674223", "1195524421"]));
-console.log(solution(["123", "456", "789"]));
-console.log(solution(["12", "123", "1235", "567", "88"]));
+console.log(solution(5, [2, 4], [1, 3, 5]));
+console.log(solution(5, [2, 4], [3]));
+console.log(solution(3, [3], [1]));
