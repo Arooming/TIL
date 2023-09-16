@@ -1,3 +1,4 @@
+// 체육복
 function solution(n, lost, reserve) {
   const lostStud = lost
     .sort((a, b) => a - b)
