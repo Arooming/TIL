@@ -47,7 +47,7 @@ function solution(numbers) {
     const permutation = [...getPermutation([...numbers], i)];
     const primeNumbers = permutation.filter((arr) => {
       // 숫자 조합
-      const number = arr.join("");
+      const number = +arr.join("");
       // 소수 체크
       const isPrimeNumber = checkPrimeNumber(number);
       return isPrimeNumber;
@@ -55,7 +55,7 @@ function solution(numbers) {
 
     primeNumbers.forEach((arr) => {
       // arr을 문자열 형태로 바꿔서 answer에 추가
-      answer.add(arr.join(""));
+      answer.add(+arr.join(""));
     });
   }
 
