@@ -1,26 +1,85 @@
-// 체육복
-function solution(n, lost, reserve) {
-  const lostStud = lost
-    .sort((a, b) => a - b)
-    .filter((lost) => !reserve.includes(lost));
+// 더 맵게
+class MinHeap {
+  constructor() {
+    this.heap = [];
+  }
 
-  let reserveStud = reserve
-    .sort((a, b) => a - b)
-    .filter((reserve) => !lost.includes(reserve));
+  size() {
+    return this.heap.length;
+  }
 
-  const finalLost = lostStud.filter((lost) => {
-    let canLendStud = reserveStud.find(
-      (reserve) => Math.abs(lost - reserve) === 1
-    );
+  peek() {
+    return this.heap[0];
+  }
 
-    if (!canLendStud) return lost;
+  push(value) {
+    this.heap.push(value);
+    let curIdx = this.heap.length - 1;
 
-    reserveStud = reserveStud.filter((reserve) => (reserve -= canLendStud));
-  });
+    while (
+      curIdx > 0 &&
+      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
+    ) {
+      const tmp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
+      this.heap[Math.floor((curIdx - 1) / 2)] = tmp;
+      curIdx = Math.floor((curIdx - 1) / 2);
+    }
+  }
 
-  return n - finalLost.length;
+  pop() {
+    if (this.heap.length === 0) {
+      return null;
+    }
+
+    if (this.heap.length === 1) {
+      return this.heap.pop();
+    }
+
+    const minVal = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    let curIdx = 0;
+
+    while (curIdx * 2 + 1 < this.heap.length) {
+      let minChildIdx =
+        curIdx * 2 + 2 < this.heap.length &&
+        this.heap[curIdx * 2 + 2] < this.heap[curIdx * 2 + 1]
+          ? curIdx * 2 + 2
+          : curIdx * 2 + 1;
+
+      if (this.heap[curIdx] < this.heap[minChildIdx]) {
+        break;
+      }
+
+      const tmp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[minChildIdx];
+      this.heap[minChildIdx] = tmp;
+      curIdx = minChildIdx;
+    }
+
+    return minVal;
+  }
 }
 
-console.log(solution(5, [2, 4], [1, 3, 5]));
-console.log(solution(5, [2, 4], [3]));
-console.log(solution(3, [3], [1]));
+function solution(scoville, K) {
+  const minHeap = new MinHeap();
+
+  for (const sco of scoville) {
+    minHeap.push(sco);
+  }
+
+  let mixedCount = 0;
+
+  while (minHeap.size() >= 2 && minHeap.peek() < K) {
+    const firstMin = minHeap.pop();
+    const secondMin = minHeap.pop();
+    const mixedScov = firstMin + secondMin * 2;
+
+    minHeap.push(mixedScov);
+    mixedCount++;
+  }
+
+  return minHeap.peek() >= K ? mixedCount : -1;
+}
+
+console.log(solution([1, 2, 3, 9, 10, 12], 7));
