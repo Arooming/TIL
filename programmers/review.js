@@ -1,26 +1,78 @@
-// 기능 개발
-function solution(progresses, speeds) {
-  var answer = [];
+// 더 맵게
+class MinHeap {
+  constructor() {
+    this.heap = [];
+  }
 
-  let tasks = progresses.map((prog) => 100 - prog);
-  let days = tasks.map((task, i) => Math.ceil(task / speeds[i]));
-  let count = 1;
+  size() {
+    return this.heap.length;
+  }
 
-  let maxDay = days[0];
-  for (let i = 1; i < days.length; i++) {
-    if (maxDay < days[i]) {
-      answer.push(count);
-      maxDay = days[i];
-      count = 1;
-    } else {
-      count += 1;
+  peek() {
+    return this.heap[0];
+  }
+
+  push(value) {
+    this.heap.push(value);
+    let curIdx = this.heap.length - 1;
+
+    while (
+      curIdx > 0 &&
+      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
+    ) {
+      const tmp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
+      this.heap[Math.floor((curIdx - 1) / 2)] = tmp;
+      curIdx = Math.floor((curIdx - 1) / 2);
     }
   }
 
-  answer.push(count);
+  pop() {
+    if (this.heap.length === 0) return null;
+    if (this.heap.length === 1) return this.heap.pop();
 
-  return answer;
+    const minVal = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    let curIdx = 0;
+
+    while (curIdx * 2 + 1 < this.heap.length) {
+      let minChildIdx =
+        curIdx * 2 + 2 < this.heap.length &&
+        this.heap[curIdx * 2 + 2] < this.heap[curIdx * 2 + 1]
+          ? curIdx * 2 + 2
+          : curIdx * 2 + 1;
+
+      if (this.heap[curIdx] < this.heap[minChildIdx]) {
+        break;
+      }
+
+      const tmp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[minChildIdx];
+      this.heap[minChildIdx] = tmp;
+
+      curIdx = minChildIdx;
+    }
+    return minVal;
+  }
 }
 
-console.log(solution([93, 30, 55], [1, 30, 5]));
-console.log(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]));
+function solution(scoville, K) {
+  const minHeap = new MinHeap();
+  let count = 0;
+
+  for (const sco of scoville) {
+    minHeap.push(sco);
+  }
+
+  while (minHeap.size() >= 2 && minHeap.peek() < K) {
+    const firstMin = minHeap.pop();
+    const secondMin = minHeap.pop();
+    const mixedScov = firstMin + secondMin * 2;
+    minHeap.push(mixedScov);
+    count += 1;
+  }
+
+  return minHeap.peek() >= K ? count : -1;
+}
+
+console.log(solution([1, 2, 3, 9, 10, 12], 7));
