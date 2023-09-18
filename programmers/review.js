@@ -1,30 +1,26 @@
-// 의상
-function solution(clothes) {
-  let answer = 1;
-  let obj = {};
+// 기능 개발
+function solution(progresses, speeds) {
+  var answer = [];
 
-  for (let i = 0; i < clothes.length; i++) {
-    obj[clothes[i][1]] = (obj[clothes[i][1]] || 1) + 1;
+  let tasks = progresses.map((prog) => 100 - prog);
+  let days = tasks.map((task, i) => Math.ceil(task / speeds[i]));
+  let count = 1;
+
+  let maxDay = days[0];
+  for (let i = 1; i < days.length; i++) {
+    if (maxDay < days[i]) {
+      answer.push(count);
+      maxDay = days[i];
+      count = 1;
+    } else {
+      count += 1;
+    }
   }
 
-  for (let j in obj) {
-    answer *= obj[j];
-  }
+  answer.push(count);
 
-  return answer - 1;
+  return answer;
 }
 
-console.log(
-  solution([
-    ["yellow_hat", "headgear"],
-    ["blue_sunglasses", "eyewear"],
-    ["green_turban", "headgear"],
-  ])
-);
-console.log(
-  solution([
-    ["crow_mask", "face"],
-    ["blue_sunglasses", "face"],
-    ["smoky_makeup", "face"],
-  ])
-);
+console.log(solution([93, 30, 55], [1, 30, 5]));
+console.log(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]));
