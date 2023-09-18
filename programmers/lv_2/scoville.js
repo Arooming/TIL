@@ -24,7 +24,7 @@ class MinHeap {
     }
   }
 
-  // 값을 빼되, 오름차 순 정렬 함
+  // 값을 빼되, 오름차순 정렬 함
   pop() {
     if (this.heap.length === 0) return null;
     if (this.heap.length === 1) return this.heap.pop();
@@ -77,20 +77,5 @@ function solution(scoville, K) {
 
   return minHeap.peek() >= K ? mixedCount : -1;
 }
-
-/* function solution(scoville, K) {
-  var answer = 0;
-
-  while (scoville[0] < K) {
-    let newSco = scoville[0] + scoville[1] * 2;
-    scoville.splice(0, 2);
-    scoville.push(newSco);
-    scoville.sort((a, b) => a - b);
-
-    answer += 1;
-  }
-
-  return answer;
-} */
 
 console.log(solution([1, 2, 3, 9, 10, 12], 7));
