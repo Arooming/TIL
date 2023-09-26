@@ -7,6 +7,7 @@ function solution(clothes) {
     // obj[key] = value;
     // 카테고리에 해당하는 의상이 없는 경우, 1로 대체
     // 카테고리에 해당하는 의상이 있는 경우, 의상의 개수 1 증가
+    // 의상을 입지 않는 경우도 고려하여 +1
     obj[clothes[i][1]] = (obj[clothes[i][1]] || 1) + 1;
   }
 
