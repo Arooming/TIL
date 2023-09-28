@@ -24,4 +24,5 @@ function solution(brown, yellow) {
 console.log(solution(10, 2));
 console.log(solution(8, 1));
 console.log(solution(24, 24));
+// 예외처리를 해주지 않으면 에러가 발생하는 케이스
 console.log(solution(18, 6));
