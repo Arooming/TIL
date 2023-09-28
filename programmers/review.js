@@ -1,24 +1,18 @@
-// 큰 수 만들기
-function solution(number, k) {
-  let stack = [];
+// 구명보트
+function solution(people, limit) {
+  var answer = 0;
 
-  for (let i = 0; i < number.length; i++) {
-    while (k > 0 && stack[stack.length - 1] < number[i]) {
-      stack.pop();
-      k--;
+  people.sort((a, b) => b - a);
+  for (let i = 0, j = people.length - 1; i <= j; i++) {
+    if (people[i] + people[j] <= limit) {
+      j--;
     }
-
-    stack.push(number[i]);
+    answer++;
   }
 
-  // 위의 for문이 끝났음에도 k값이 남아있는 경우, 가장 상위 값부터 남은 k개의 수 제거
-  // ex. (1010, 2)
-  stack.splice(stack.length - k, k);
-
-  return stack.join("");
+  return answer;
 }
 
-console.log(solution("1924", 2));
-console.log(solution("1231234", 3));
-console.log(solution("4177252841", 4));
-console.log(solution("1010", 2));
+console.log(solution([70, 50, 80, 50], 100));
+console.log(solution([70, 50, 80], 100));
+console.log(solution([10, 60, 20, 30], 100));
