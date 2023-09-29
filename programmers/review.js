@@ -1,28 +1,28 @@
-// 프로세스
-function solution(priorities, location) {
-  var answer = 0;
+// 카펫
+function solution(brown, yellow) {
+  const width = brown + yellow;
+  const arr = [];
 
-  let maxPrio = Math.max(...priorities);
-  let idxArr = priorities.map((_, i) => {
-    return i;
-  });
-
-  while (priorities.length !== 0) {
-    maxPrio = Math.max(...priorities);
-
-    if (priorities[0] < maxPrio) {
-      priorities.push(priorities.shift());
-      idxArr.push(idxArr.shift());
-    } else {
-      answer += 1;
-      priorities.shift();
-
-      if (idxArr.shift() === location) {
-        return answer;
-      }
+  for (let i = 1; i <= width; i++) {
+    if (width % i === 0) {
+      arr.push(i);
     }
   }
+
+  let x = Math.ceil((arr.length - 1) / 2);
+  let y = Math.floor((arr.length - 1) / 2);
+
+  if (arr[x] + arr[y] !== brown / 2 + 2) {
+    while (arr[x] + arr[y] !== brown / 2 + 2) {
+      x -= 1;
+      y += 1;
+    }
+  }
+  return arr[x] > arr[y] ? [arr[x], arr[y]] : [arr[y], arr[x]];
 }
 
-console.log(solution([2, 1, 3, 2], 2));
-console.log(solution([1, 1, 9, 1, 1, 1], 0));
+console.log(solution(10, 2));
+console.log(solution(8, 1));
+console.log(solution(24, 24));
+// 예외처리를 해주지 않으면 에러가 발생하는 케이스
+console.log(solution(18, 6));
