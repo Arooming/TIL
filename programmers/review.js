@@ -1,18 +1,28 @@
-// 구명보트
-function solution(people, limit) {
+// 프로세스
+function solution(priorities, location) {
   var answer = 0;
 
-  people.sort((a, b) => b - a);
-  for (let i = 0, j = people.length - 1; i <= j; i++) {
-    if (people[i] + people[j] <= limit) {
-      j--;
-    }
-    answer++;
-  }
+  let maxPrio = Math.max(...priorities);
+  let idxArr = priorities.map((_, i) => {
+    return i;
+  });
 
-  return answer;
+  while (priorities.length !== 0) {
+    maxPrio = Math.max(...priorities);
+
+    if (priorities[0] < maxPrio) {
+      priorities.push(priorities.shift());
+      idxArr.push(idxArr.shift());
+    } else {
+      answer += 1;
+      priorities.shift();
+
+      if (idxArr.shift() === location) {
+        return answer;
+      }
+    }
+  }
 }
 
-console.log(solution([70, 50, 80, 50], 100));
-console.log(solution([70, 50, 80], 100));
-console.log(solution([10, 60, 20, 30], 100));
+console.log(solution([2, 1, 3, 2], 2));
+console.log(solution([1, 1, 9, 1, 1, 1], 0));
