@@ -16,7 +16,7 @@ function solution(brown, yellow) {
     while (arr[x] + arr[y] !== brown / 2 + 2) {
       x -= 1;
       y += 1;
-    }
+    } 
   }
   return arr[x] > arr[y] ? [arr[x], arr[y]] : [arr[y], arr[x]];
 }
