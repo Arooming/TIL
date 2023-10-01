@@ -1,28 +1,17 @@
-// 카펫
-function solution(brown, yellow) {
-  const width = brown + yellow;
+// 큰 수 만들기
+function solution(number, k) {
   const arr = [];
-
-  for (let i = 1; i <= width; i++) {
-    if (width % i === 0) {
-      arr.push(i);
+  for (let i = 0; i < number.length; i++) {
+    while (arr.length > 0 && arr[arr.length - 1] < number[i] && k > 0) {
+      k--;
+      arr.pop();
     }
+    arr.push(number[i]);
   }
-
-  let x = Math.ceil((arr.length - 1) / 2);
-  let y = Math.floor((arr.length - 1) / 2);
-
-  if (arr[x] + arr[y] !== brown / 2 + 2) {
-    while (arr[x] + arr[y] !== brown / 2 + 2) {
-      x -= 1;
-      y += 1;
-    } 
-  }
-  return arr[x] > arr[y] ? [arr[x], arr[y]] : [arr[y], arr[x]];
+  arr.splice(number.length - k, k);
+  return arr.join("");
 }
 
-console.log(solution(10, 2));
-console.log(solution(8, 1));
-console.log(solution(24, 24));
-// 예외처리를 해주지 않으면 에러가 발생하는 케이스
-console.log(solution(18, 6));
+console.log(solution("1924", 2));
+console.log(solution("1231234", 3));
+console.log(solution("4177252841", 4));
