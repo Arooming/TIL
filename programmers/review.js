@@ -1,17 +1,16 @@
-// 큰 수 만들기
-function solution(number, k) {
-  const arr = [];
-  for (let i = 0; i < number.length; i++) {
-    while (arr.length > 0 && arr[arr.length - 1] < number[i] && k > 0) {
-      k--;
-      arr.pop();
+// H-Index
+function solution(citations) {
+  let answer = 0;
+  citations.sort((a, b) => b - a);
+
+  for (let i = 0; i < citations.length; i++) {
+    if (i < citations[i]) {
+      answer++;
     }
-    arr.push(number[i]);
   }
-  arr.splice(number.length - k, k);
-  return arr.join("");
+
+  return answer;
 }
 
-console.log(solution("1924", 2));
-console.log(solution("1231234", 3));
-console.log(solution("4177252841", 4));
+console.log(solution([47, 42, 32, 28, 24, 22, 17, 15, 10, 10, 8]));
+console.log(solution([3, 0, 6, 1, 5]));
