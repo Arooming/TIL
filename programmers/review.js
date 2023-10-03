@@ -1,16 +1,28 @@
-// H-Index
-function solution(citations) {
-  let answer = 0;
-  citations.sort((a, b) => b - a);
+// 피로도
+function solution(k, dungeons) {
+  var answer = 0;
+  const visited = Array(dungeons.length).fill(false);
 
-  for (let i = 0; i < citations.length; i++) {
-    if (i < citations[i]) {
-      answer++;
+  function DFS(count, k) {
+    for (let i = 0; i < dungeons.length; i++) {
+      if (!visited[i] && dungeons[i][0] <= k) {
+        visited[i] = 1;
+        DFS(count + 1, k - dungeons[i][1]);
+        visited[i] = 0;
+      }
     }
+    answer = Math.max(answer, count);
   }
+
+  DFS(0, k);
 
   return answer;
 }
 
-console.log(solution([47, 42, 32, 28, 24, 22, 17, 15, 10, 10, 8]));
-console.log(solution([3, 0, 6, 1, 5]));
+console.log(
+  solution(80, [
+    [80, 20],
+    [50, 40],
+    [30, 10],
+  ])
+);
