@@ -1,28 +1,25 @@
-// 피로도
-function solution(k, dungeons) {
-  var answer = 0;
-  const visited = Array(dungeons.length).fill(false);
+// 조이스틱
+function solution(name) {
+  let answer = 0;
+  let minMove = name.length - 1;
 
-  function DFS(count, k) {
-    for (let i = 0; i < dungeons.length; i++) {
-      if (!visited[i] && dungeons[i][0] <= k) {
-        visited[i] = 1;
-        DFS(count + 1, k - dungeons[i][1]);
-        visited[i] = 0;
-      }
+  [...name].map((n, i) => {
+    answer += Math.min(n.charCodeAt() - 65, 91 - n.charCodeAt());
+    let idx = i + 1;
+
+    while (name[idx] === "A" && idx < name.length) {
+      idx++;
     }
-    answer = Math.max(answer, count);
-  }
 
-  DFS(0, k);
+    minMove = Math.min(
+      minMove,
+      i * 2 + name.length - idx,
+      i + 2 * (name.length - idx)
+    );
+  });
 
-  return answer;
+  return answer + minMove;
 }
 
-console.log(
-  solution(80, [
-    [80, 20],
-    [50, 40],
-    [30, 10],
-  ])
-);
+console.log(solution("JEROEN"));
+console.log(solution("JAN"));
