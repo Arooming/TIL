@@ -1,53 +1,85 @@
-// 소수 찾기
-const getPermutation = (arr, selectNumber) => {
-  const results = [];
-
-  if (selectNumber === 1) return arr.map((v) => [v]);
-  else {
-    arr.forEach((fixed, index, origin) => {
-      const rest = [...origin.slice(0, index), ...origin.slice(index + 1)];
-      const permutations = getPermutation(rest, selectNumber - 1);
-      const attached = permutations.map((permutation) => [
-        fixed,
-        ...permutation,
-      ]);
-      results.push(...attached);
-    });
+// 더 맵게
+class MinHeap {
+  constructor() {
+    this.heap = [];
   }
 
-  return results;
-};
-
-// 소수 판별하는 함수
-const checkPrimeNumber = (number) => {
-  if (number < 2) return false;
-
-  for (let i = 2; i <= Math.sqrt(number); i++) {
-    const remainder = number % i;
-    if (remainder === 0) return false;
-  }
-  return true;
-};
-
-function solution(numbers) {
-  const answer = new Set();
-
-  for (let i = 1; i <= numbers.length; i++) {
-    const permutation = [...getPermutation([...numbers], i)];
-    const primeNumbers = permutation.filter((arr) => {
-      const number = +arr.join("");
-      const isPrimeNumber = checkPrimeNumber(number);
-      return isPrimeNumber;
-    });
-
-    primeNumbers.forEach((arr) => {
-      answer.add(+arr.join(""));
-    });
+  size() {
+    return this.heap.length;
   }
 
-  return answer.size;
+  peek() {
+    return this.heap[0];
+  }
+
+  push(value) {
+    this.heap.push(value);
+    let curIdx = this.heap.length - 1;
+
+    while (
+      curIdx > 0 &&
+      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
+    ) {
+      const tmp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
+      this.heap[Math.floor((curIdx - 1) / 2)] = tmp;
+
+      curIdx = Math.floor((curIdx - 1) / 2);
+    }
+  }
+
+  pop() {
+    if (this.heap.length === 0) {
+      return null;
+    }
+
+    if (this.heap.length === 1) {
+      return this.heap.pop();
+    }
+
+    const minVal = this.heap[0];
+    this.heap[0] = this.heap.pop();
+
+    let curIdx = 0;
+    while (curIdx * 2 + 1 < this.heap.length) {
+      let minChildIdx =
+        curIdx * 2 + 2 < this.heap.length &&
+        this.heap[curIdx * 2 + 1] < this.heap[curIdx * 2 + 1]
+          ? curIdx * 2 + 2
+          : curIdx * 2 + 1;
+
+      if (this.heap[curIdx] < this.heap[minChildIdx]) break;
+
+      const tmp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[minChildIdx];
+      this.heap[minChildIdx] = tmp;
+
+      curIdx = minChildIdx;
+    }
+
+    return minVal;
+  }
 }
 
-console.log(solution("17"));
-console.log(solution("011"));
-console.log(solution("123"));
+function solution(scoville, K) {
+  const minHeap = new MinHeap();
+
+  let count = 0;
+
+  for (const sco of scoville) {
+    minHeap.push(sco);
+  }
+
+  while (minHeap.size() >= 2 && minHeap.peek() < K) {
+    const first = minHeap.pop();
+    const second = minHeap.pop();
+    const mixedScov = first + second * 2;
+
+    minHeap.push(mixedScov);
+    count++;
+  }
+
+  return minHeap.peek() >= K ? count : -1;
+}
+
+console.log(solution([1, 2, 3, 9, 10, 12], 7));
