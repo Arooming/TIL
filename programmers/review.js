@@ -1,25 +1,53 @@
-// 조이스틱
-function solution(name) {
-  let answer = 0;
-  let minMove = name.length - 1;
+// 소수 찾기
+const getPermutation = (arr, selectNumber) => {
+  const results = [];
 
-  [...name].map((n, i) => {
-    answer += Math.min(n.charCodeAt() - 65, 91 - n.charCodeAt());
-    let idx = i + 1;
+  if (selectNumber === 1) return arr.map((v) => [v]);
+  else {
+    arr.forEach((fixed, index, origin) => {
+      const rest = [...origin.slice(0, index), ...origin.slice(index + 1)];
+      const permutations = getPermutation(rest, selectNumber - 1);
+      const attached = permutations.map((permutation) => [
+        fixed,
+        ...permutation,
+      ]);
+      results.push(...attached);
+    });
+  }
 
-    while (name[idx] === "A" && idx < name.length) {
-      idx++;
-    }
+  return results;
+};
 
-    minMove = Math.min(
-      minMove,
-      i * 2 + name.length - idx,
-      i + 2 * (name.length - idx)
-    );
-  });
+// 소수 판별하는 함수
+const checkPrimeNumber = (number) => {
+  if (number < 2) return false;
 
-  return answer + minMove;
+  for (let i = 2; i <= Math.sqrt(number); i++) {
+    const remainder = number % i;
+    if (remainder === 0) return false;
+  }
+  return true;
+};
+
+function solution(numbers) {
+  const answer = new Set();
+
+  for (let i = 1; i <= numbers.length; i++) {
+    const permutation = [...getPermutation([...numbers], i)];
+    const primeNumbers = permutation.filter((arr) => {
+      const number = +arr.join("");
+      const isPrimeNumber = checkPrimeNumber(number);
+      return isPrimeNumber;
+    });
+
+    primeNumbers.forEach((arr) => {
+      answer.add(+arr.join(""));
+    });
+  }
+
+  return answer.size;
 }
 
-console.log(solution("JEROEN"));
-console.log(solution("JAN"));
+console.log(solution("17"));
+console.log(solution("011"));
+console.log(solution("123"));
