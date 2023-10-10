@@ -1,3 +1,4 @@
+// 전력망을 둘로 나누기
 function solution(n, wires) {
   // 비교하여 최소값을 걸러내야 하므로, 가장 큰 수로 초기화
   var answer = Number.MAX_VALUE;
