@@ -1,0 +1,23 @@
+// 모음사전
+function solution(word) {
+    const result = [];
+    const str = "";
+    for (let i = 1; i <= 5; i++) dfs(str, i, result);
+    return result.sort().indexOf(word) + 1;
+  }
+  
+  const dfs = (word, length, result) => {
+    const vowels = [..."AEIOU"];
+    if (length === word.length) {
+      result.push(word);
+      return;
+    }
+    vowels.forEach((vowel) => {
+      dfs(word + vowel, length, result);
+    });
+  };
+
+console.log(solution("AAAAE"));
+console.log(solution("AAAE"));
+console.log(solution("I"));
+console.log(solution("EIO"));
