@@ -1,54 +1,67 @@
-// 소수 찾기
-// 순열을 구하는 함수
-const getPermutation = (arr, selectNumber) => {
-  const result = [];
-  if (selectNumber === 1) return arr.map((v) => [v]);
-  else {
-    arr.forEach((fixed, index, origin) => {
-      const rest = [...origin.slice(0, index), ...origin.slice(index + 1)];
+// 전력망을 둘로 나누기
+function solution(n, wires) {
+  let answer = Number.MAX_VALUE;
+  let cnt = 0;
 
-      const permutations = getPermutation(rest, selectNumber - 1);
+  while (cnt !== wires.length) {
+    let cur = wires.shift();
+    let node1 = cur[0];
+    let node2 = cur[1];
 
-      const attached = permutations.map((permu) => [fixed, ...permu]);
-      result.push(...attached);
-    });
+    answer = Math.min(answer, Math.abs(bfs(node1) - bfs(node2)));
+
+    wires.push(cur);
+    cnt++;
   }
 
-  return result;
-};
+  return answer;
 
-// 소수 판별하는 함수
-const checkPrimeNumber = (number) => {
-  if (number < 2) return false;
+  function bfs(node) {
+    let visited = [];
+    let needVisit = [node];
 
-  for (let i = 2; i <= Math.sqrt(number); i++) {
-    const num = number % i;
-    if (num === 0) {
-      return false;
+    while (needVisit !== 0) {
+      let cur = needVisit.shift();
+
+      wires.forEach((wire) => {
+        if (wire.includes(cur)) {
+          let other = wire[0] === cur ? wire[1] : wire[0];
+
+          if (!visited.includes(other)) needVisit.push(other);
+        }
+      });
+      visited.push(cur);
     }
+    return visited.length;
   }
-
-  return true;
-};
-
-function solution(numbers) {
-  const answer = new Set();
-
-  for (let i = 1; i <= numbers.length; i++) {
-    const permutation = [...getPermutation([...numbers], i)];
-
-    const primeNumbers = permutation.filter((arr) => {
-      const number = +arr.join("");
-      const isPrimeNumber = checkPrimeNumber(number);
-      return isPrimeNumber;
-    });
-
-    primeNumbers.forEach((arr) => answer.add(+arr.join("")));
-  }
-
-  return answer.size;
 }
 
-console.log(solution("17"));
-console.log(solution("011"));
-console.log(solution("123"));
+console.log(
+  solution(9, [
+    [1, 3],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [4, 6],
+    [4, 7],
+    [7, 8],
+    [7, 9],
+  ])
+);
+console.log(
+  solution(4, [
+    [1, 2],
+    [2, 3],
+    [3, 4],
+  ])
+);
+console.log(
+  solution(7, [
+    [1, 2],
+    [2, 7],
+    [3, 7],
+    [3, 4],
+    [4, 5],
+    [6, 7],
+  ])
+);
