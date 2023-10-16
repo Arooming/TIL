@@ -1,16 +1,31 @@
-// 전화번호 목록
-function solution(phone_book) {
-  phone_book.sort();
-  for (let i = 0, len = phone_book.length - 1; i < len; i++) {
-    if (
-      phone_book[i] === phone_book[i + 1].substring(0, phone_book[i].length)
-    ) {
-      return false;
-    }
+// 의상
+function solution(clothes) {
+  let obj = {};
+  let answer = 1;
+  clothes.sort();
+
+  for (let i = 0; i < clothes.length; i++) {
+    obj[clothes[i][1]] = (obj[clothes[i][1]] || 1) + 1;
   }
-  return true;
+
+  for (let key in obj) {
+    answer *= obj[key];
+  }
+
+  return answer - 1;
 }
 
-console.log(solution(["119", "97674223", "1195524421"]));
-console.log(solution(["123", "456", "789"]));
-console.log(solution(["12", "123", "1235", "567", "88"]));
+console.log(
+  solution([
+    ["yellow_hat", "headgear"],
+    ["blue_sunglasses", "eyewear"],
+    ["green_turban", "headgear"],
+  ])
+);
+console.log(
+  solution([
+    ["crow_mask", "face"],
+    ["blue_sunglasses", "face"],
+    ["smoky_makeup", "face"],
+  ])
+);
