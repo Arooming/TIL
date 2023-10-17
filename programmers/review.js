@@ -1,14 +1,24 @@
-// 같은 숫자는 싫어
-function solution(arr) {
+// 올바른 괄호
+// 예외 사항
+// 1. return 시 "("나 ")"가 남아있는 경우
+// 2. ")"를 넣으려고 하는데 스택에 "("이 남아있지 않은 경우
+function solution(s) {
   var answer = [];
-  answer.push(arr[0]);
 
-  for (let i = 1; i < arr.length; i++) {
-    arr[i] === arr[i - 1] ? answer : answer.push(arr[i]);
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      answer.push(s[i]);
+    } else {
+      if (answer.length === 0) {
+        return false;
+      }
+      answer.pop();
+    }
   }
 
-  return answer;
+  return answer.length !== 0 ? false : true;
 }
-
-console.log(solution([1, 1, 3, 3, 0, 1, 1]));
-console.log(solution([4, 4, 4, 3, 3]));
+console.log(solution("()()"));
+console.log(solution("(())()"));
+console.log(solution(")()("));
+console.log(solution("(()("));
