@@ -1,28 +1,31 @@
-// 프로세스
-function solution(priorities, location) {
-  var answer = 0;
-  let obj = priorities.map((prio, i) => {
-    return { prio: prio, idx: i };
-  });
+// 의상
+function solution(clothes) {
+  var answer = 1;
+  let obj = {};
+  clothes.sort();
 
-  let val = 0;
-
-  let maxNum = Math.max(...obj.map((item) => item.prio));
-
-  while (obj.length) {
-    maxNum = Math.max(...obj.map((item) => item.prio));
-    if (obj[0].prio !== maxNum) {
-      val = obj.shift();
-      obj.push(val);
-    } else {
-      answer += 1;
-      val = obj.shift();
-      if (val.idx === location) {
-        return answer;
-      }
-    }
+  for (let i = 0; i < clothes.length; i++) {
+    obj[clothes[i][1]] = (obj[clothes[i][1]] || 1) + 1;
   }
+
+  for (let key in obj) {
+    answer *= obj[key];
+  }
+
+  return answer - 1;
 }
 
-console.log(solution([2, 1, 3, 2], 2));
-console.log(solution([1, 1, 9, 1, 1, 1], 0));
+console.log(
+  solution([
+    ["yellow_hat", "headgear"],
+    ["blue_sunglasses", "eyewear"],
+    ["green_turban", "headgear"],
+  ])
+);
+console.log(
+  solution([
+    ["crow_mask", "face"],
+    ["blue_sunglasses", "face"],
+    ["smoky_makeup", "face"],
+  ])
+);
