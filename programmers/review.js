@@ -1,24 +1,28 @@
-// 기능 개발
-function solution(progresses, speeds) {
-  var answer = [];
-  let count = 1;
+// 프로세스
+function solution(priorities, location) {
+  var answer = 0;
+  let obj = priorities.map((prio, i) => {
+    return { prio: prio, idx: i };
+  });
 
-  let curProg = progresses.map((prog) => 100 - prog);
-  let remaindDate = speeds.map((speed, i) => Math.ceil(curProg[i] / speed));
+  let val = 0;
 
-  let maxDate = remaindDate[0];
+  let maxNum = Math.max(...obj.map((item) => item.prio));
 
-  for (let i = 1; i <= progresses.length; i++) {
-    if (maxDate >= remaindDate[i]) {
-      count += 1;
+  while (obj.length) {
+    maxNum = Math.max(...obj.map((item) => item.prio));
+    if (obj[0].prio !== maxNum) {
+      val = obj.shift();
+      obj.push(val);
     } else {
-      answer.push(count);
-      count = 1;
-      maxDate = remaindDate[i];
+      answer += 1;
+      val = obj.shift();
+      if (val.idx === location) {
+        return answer;
+      }
     }
   }
-  return answer;
 }
 
-console.log(solution([93, 30, 55], [1, 30, 5]));
-console.log(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]));
+console.log(solution([2, 1, 3, 2], 2));
+console.log(solution([1, 1, 9, 1, 1, 1], 0));
