@@ -1,24 +1,24 @@
-// 올바른 괄호
-// 예외 사항
-// 1. return 시 "("나 ")"가 남아있는 경우
-// 2. ")"를 넣으려고 하는데 스택에 "("이 남아있지 않은 경우
-function solution(s) {
+// 기능 개발
+function solution(progresses, speeds) {
   var answer = [];
+  let count = 1;
 
-  for (let i = 0; i < s.length; i++) {
-    if (s[i] === "(") {
-      answer.push(s[i]);
+  let curProg = progresses.map((prog) => 100 - prog);
+  let remaindDate = speeds.map((speed, i) => Math.ceil(curProg[i] / speed));
+
+  let maxDate = remaindDate[0];
+
+  for (let i = 1; i <= progresses.length; i++) {
+    if (maxDate >= remaindDate[i]) {
+      count += 1;
     } else {
-      if (answer.length === 0) {
-        return false;
-      }
-      answer.pop();
+      answer.push(count);
+      count = 1;
+      maxDate = remaindDate[i];
     }
   }
-
-  return answer.length !== 0 ? false : true;
+  return answer;
 }
-console.log(solution("()()"));
-console.log(solution("(())()"));
-console.log(solution(")()("));
-console.log(solution("(()("));
+
+console.log(solution([93, 30, 55], [1, 30, 5]));
+console.log(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]));
