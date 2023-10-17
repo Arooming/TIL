@@ -1,31 +1,14 @@
-// 의상
-function solution(clothes) {
-  let obj = {};
-  let answer = 1;
-  clothes.sort();
+// 같은 숫자는 싫어
+function solution(arr) {
+  var answer = [];
+  answer.push(arr[0]);
 
-  for (let i = 0; i < clothes.length; i++) {
-    obj[clothes[i][1]] = (obj[clothes[i][1]] || 1) + 1;
+  for (let i = 1; i < arr.length; i++) {
+    arr[i] === arr[i - 1] ? answer : answer.push(arr[i]);
   }
 
-  for (let key in obj) {
-    answer *= obj[key];
-  }
-
-  return answer - 1;
+  return answer;
 }
 
-console.log(
-  solution([
-    ["yellow_hat", "headgear"],
-    ["blue_sunglasses", "eyewear"],
-    ["green_turban", "headgear"],
-  ])
-);
-console.log(
-  solution([
-    ["crow_mask", "face"],
-    ["blue_sunglasses", "face"],
-    ["smoky_makeup", "face"],
-  ])
-);
+console.log(solution([1, 1, 3, 3, 0, 1, 1]));
+console.log(solution([4, 4, 4, 3, 3]));
