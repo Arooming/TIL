@@ -1,23 +1,13 @@
-// k 번째 수
-function solution(array, commands) {
-  var answer = [];
+// 가장 큰 수
+function solution(numbers) {
+  var answer = numbers
+    .map((number) => number.toString())
+    .sort((a, b) => b + a - (a + b))
+    .join("");
 
-  for (let i = 0; i < commands.length; i++) {
-    let slicedArr = array.slice(commands[i][0] - 1, commands[i][1]);
-    slicedArr.sort((a, b) => a - b);
-    answer.push(slicedArr[commands[i][2] - 1]);
-  }
-
-  return answer;
+  // 정렬을 했음에도, 맨 앞자리가 0이라면 그대로 0을 리턴하면 됨
+  return answer[0] === "0" ? "0" : answer;
 }
 
-console.log(
-  solution(
-    [1, 5, 2, 6, 3, 7, 4],
-    [
-      [2, 5, 3],
-      [4, 4, 1],
-      [1, 7, 3],
-    ]
-  )
-);
+console.log(solution([6, 10, 2]));
+console.log(solution([3, 30, 34, 5, 9]));
