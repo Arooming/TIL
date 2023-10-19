@@ -1,26 +1,33 @@
 // 프로세스
-// shift() 활용
 function solution(priorities, location) {
   var answer = 0;
-  let maxPrio = Math.max(...priorities);
-  let idxArr = priorities.map((_, i) => i);
+  let shiftedVal = 0;
 
-  while (priorities.length) {
-    if (priorities[0] < maxPrio) {
-      priorities.push(priorities.shift());
-      idxArr.push(idxArr.shift());
+  let obj = priorities.map((prio, i) => {
+    return { prio: prio, idx: i };
+  });
+
+  // 객체 배열 최댓값 구하는 방법
+  let maxNum = Math.max(...obj.map((item) => item.prio));
+
+  while (obj) {
+    maxNum = Math.max(...obj.map((item) => item.prio));
+    // 배열의 첫번째 수가 maxNum보다 작은 경우
+    if (obj[0].prio < maxNum) {
+      // 가장 앞자리 객체 뽑아서 객체의 맨 뒷자리에 붙이기
+      shiftedVal = obj.shift();
+      obj.push(shiftedVal);
     } else {
+      // 가장 앞자리 객체 제거
+      shiftedVal = obj.shift();
       answer += 1;
-      priorities.shift();
-      maxPrio = Math.max(...priorities);
-
-      if (idxArr.shift() === location) {
+      // 제거된 객체 인덱스와 location이 같은 경우 answer 반환
+      if (shiftedVal.idx === location) {
         return answer;
       }
     }
   }
 }
-
 console.log(solution([2, 1, 3, 2], 2));
 console.log(solution([1, 1, 9, 1, 1, 1], 0));
 
