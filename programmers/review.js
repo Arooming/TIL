@@ -1,27 +1,41 @@
-// 프로세스
-function solution(priorities, location) {
+// 네트워크
+function solution(n, computers) {
   var answer = 0;
-  let shiftedVal = 0;
+  let visited = Array(n).fill(0);
 
-  let obj = priorities.map((prio, i) => {
-    return { prio: prio, idx: i };
-  });
-  let maxNum = Math.max(...obj.map((item) => item.prio));
-
-  while (obj) {
-    maxNum = Math.max(...obj.map((item) => item.prio));
-    if (obj[0].prio < maxNum) {
-      shiftedVal = obj.shift();
-      obj.push(shiftedVal);
-    } else {
-      shiftedVal = obj.shift();
+  for (let i = 0; i < n; i++) {
+    if (!visited[i]) {
+      dfs(i);
       answer += 1;
-      if (shiftedVal.idx === location) {
-        return answer;
+    }
+  }
+
+  function dfs(now) {
+    if (visited[now]) {
+      return;
+    }
+
+    visited[now] = 1;
+    for (let i = 0; i < computers.length; i++) {
+      if (computers[now][i]) {
+        dfs(i);
       }
     }
   }
+  return answer;
 }
 
-console.log(solution([2, 1, 3, 2], 2));
-console.log(solution([1, 1, 9, 1, 1, 1], 0));
+console.log(
+  solution(3, [
+    [1, 1, 0],
+    [1, 1, 0],
+    [0, 0, 1],
+  ])
+);
+console.log(
+  solution(3, [
+    [1, 1, 0],
+    [1, 1, 1],
+    [0, 1, 1],
+  ])
+);
