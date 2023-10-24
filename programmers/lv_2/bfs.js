@@ -36,7 +36,8 @@ function solution(maps) {
         continue;
       }
 
-      // 벽에 부딪힌 경우 예외처리
+      // 벽에 부딪힌 경우 예외처리 - 반드시 범위에 대한 예외처리 후에 처리해줄 것 !!
+      // 벽에 부딪힌 경우에 대한 예외처리를 범위에 대한 예외처리보다 먼저 해줄 경우, 범위를 벗어난 maps[nx][ny]는 unddefined를 뱉기 때문에 에러 발생!
       if (maps[nx][ny] === 0) {
         continue;
       }
