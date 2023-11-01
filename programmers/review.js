@@ -1,11 +1,26 @@
-// 가장 큰 수
-function solution(numbers) {
-  const minNumArr = numbers
-    .map((num) => num.toString())
-    .sort((a, b) => b + a - (a + b));
+// 프로세스
+function solution(priorities, location) {
+  var answer = 0;
+  let shiftObj = 0;
+  const obj = priorities.map((prio, i) => {
+    return { prio: prio, idx: i };
+  });
+  let maxNum = Math.max(...obj.map((_, i) => obj[i].prio));
 
-  return minNumArr.join("")[0] === "0" ? "0" : minNumArr.join("");
+  while (obj) {
+    maxNum = Math.max(...obj.map((_, i) => obj[i].prio));
+    if (obj[0].prio < maxNum) {
+      shiftObj = obj.shift();
+      obj.push(shiftObj);
+    } else {
+      shiftObj = obj.shift();
+      answer += 1;
+      if (shiftObj.idx === location) {
+        return answer;
+      }
+    }
+  }
 }
 
-console.log(solution([6, 10, 2]));
-console.log(solution([3, 30, 34, 5, 9]));
+console.log(solution([2, 1, 3, 2], 2));
+console.log(solution([1, 1, 9, 1, 1, 1], 0));
