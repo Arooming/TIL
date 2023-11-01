@@ -1,26 +1,43 @@
-// 프로세스
-function solution(priorities, location) {
+// 네트워크
+function solution(n, computers) {
   var answer = 0;
-  let shiftObj = 0;
-  const obj = priorities.map((prio, i) => {
-    return { prio: prio, idx: i };
-  });
-  let maxNum = Math.max(...obj.map((_, i) => obj[i].prio));
+  let visited = Array(n).fill(0);
 
-  while (obj) {
-    maxNum = Math.max(...obj.map((_, i) => obj[i].prio));
-    if (obj[0].prio < maxNum) {
-      shiftObj = obj.shift();
-      obj.push(shiftObj);
-    } else {
-      shiftObj = obj.shift();
+  for (let i = 0; i < n; i++) {
+    if (!visited[i]) {
+      dfs(i);
       answer += 1;
-      if (shiftObj.idx === location) {
-        return answer;
+    }
+  }
+
+  function dfs(now) {
+    if (visited[now]) {
+      return;
+    }
+
+    visited[now] = 1;
+    for (let i = 0; i < computers.length; i++) {
+      // 컴퓨터가 이어져있으면 computers[i][j] === 1
+      if (computers[now][i] === 1) {
+        dfs(i);
       }
     }
   }
+
+  return answer;
 }
 
-console.log(solution([2, 1, 3, 2], 2));
-console.log(solution([1, 1, 9, 1, 1, 1], 0));
+console.log(
+  solution(3, [
+    [1, 1, 0],
+    [1, 1, 0],
+    [0, 0, 1],
+  ])
+);
+console.log(
+  solution(3, [
+    [1, 1, 0],
+    [1, 1, 1],
+    [0, 1, 1],
+  ])
+);
