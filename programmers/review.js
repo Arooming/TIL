@@ -1,43 +1,18 @@
-// 네트워크
-function solution(n, computers) {
-  var answer = 0;
-  let visited = Array(n).fill(0);
+// 전화번호 목록
+function solution(phone_book) {
+  const newPhoneBook = phone_book.sort();
 
-  for (let i = 0; i < n; i++) {
-    if (!visited[i]) {
-      dfs(i);
-      answer += 1;
+  for (let i = 0; i < newPhoneBook.length - 1; i++) {
+    if (
+      newPhoneBook[i + 1].slice(0, newPhoneBook[i].length) === newPhoneBook[i]
+    ) {
+      return false;
     }
   }
-
-  function dfs(now) {
-    if (visited[now]) {
-      return;
-    }
-
-    visited[now] = 1;
-    for (let i = 0; i < computers.length; i++) {
-      // 컴퓨터가 이어져있으면 computers[i][j] === 1
-      if (computers[now][i] === 1) {
-        dfs(i);
-      }
-    }
-  }
-
-  return answer;
+  return true;
 }
 
-console.log(
-  solution(3, [
-    [1, 1, 0],
-    [1, 1, 0],
-    [0, 0, 1],
-  ])
-);
-console.log(
-  solution(3, [
-    [1, 1, 0],
-    [1, 1, 1],
-    [0, 1, 1],
-  ])
-);
+console.log(solution(["119", "97674223", "1195524421"]));
+console.log(solution(["123", "456", "789"]));
+console.log(solution(["12", "123", "1235", "567", "88"]));
+console.log(solution(["12", "1334", "13345", "567", "88"]));
