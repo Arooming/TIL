@@ -10,7 +10,7 @@ function solution(phone_book) {
     }
   }
   return true;
-}
+} 
 
 console.log(solution(["119", "97674223", "1195524421"]));
 console.log(solution(["123", "456", "789"]));
