@@ -1,5 +1,11 @@
+import MyPage from "./MyPage";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <MyPage />
+    </>
+  );
 }
 
 export default App;
