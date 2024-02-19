@@ -1,18 +1,22 @@
-// 전화번호 목록
-function solution(phone_book) {
-  const newPhoneBook = phone_book.sort();
-
-  for (let i = 0; i < newPhoneBook.length - 1; i++) {
-    if (
-      newPhoneBook[i + 1].slice(0, newPhoneBook[i].length) === newPhoneBook[i]
-    ) {
-      return false;
-    }
+// k번째 수
+function solution(array, commands) {
+  const answer = [];
+  for (i = 0; i < commands.length; i++) {
+    const slicedArr = array.slice(commands[i][0] - 1, commands[i][1]);
+    slicedArr.sort((a, b) => a - b);
+    answer.push(slicedArr[commands[i][2] - 1]);
   }
-  return true;
-} 
 
-console.log(solution(["119", "97674223", "1195524421"]));
-console.log(solution(["123", "456", "789"]));
-console.log(solution(["12", "123", "1235", "567", "88"]));
-console.log(solution(["12", "1334", "13345", "567", "88"]));
+  return answer;
+}
+
+console.log(
+  solution(
+    [1, 5, 2, 6, 3, 7, 4],
+    [
+      [2, 5, 3],
+      [4, 4, 1],
+      [1, 7, 3],
+    ]
+  )
+);
