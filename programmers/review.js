@@ -1,22 +1,12 @@
-// k번째 수
-function solution(array, commands) {
-  const answer = [];
-  for (i = 0; i < commands.length; i++) {
-    const slicedArr = array.slice(commands[i][0] - 1, commands[i][1]);
-    slicedArr.sort((a, b) => a - b);
-    answer.push(slicedArr[commands[i][2] - 1]);
-  }
+// 가장 큰 수
+function solution(numbers) {
+  const answer = numbers
+    .map((it) => it.toString())
+    .sort((a, b) => b + a - (a + b))
+    .join("");
 
-  return answer;
+  return answer[0] === "0" ? "0" : answer;
 }
 
-console.log(
-  solution(
-    [1, 5, 2, 6, 3, 7, 4],
-    [
-      [2, 5, 3],
-      [4, 4, 1],
-      [1, 7, 3],
-    ]
-  )
-);
+console.log(solution([6, 10, 2]));
+console.log(solution([3, 30, 34, 5, 9]));
