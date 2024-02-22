@@ -1,7 +1,22 @@
 // 같은 숫자는 싫어
-function solution(arr) {
-  return arr.filter((_, idx) => arr[idx] !== arr[idx + 1]);
+function solution(s) {
+  const stack = [];
+
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      stack.push(s[i]);
+    } else {
+      if (stack.length === 0) {
+        return false;
+      }
+      stack.pop();
+    }
+  }
+
+  return stack.length === 0;
 }
 
-console.log(solution([1, 1, 3, 3, 0, 1, 1]));
-console.log(solution([4, 4, 4, 3, 3]));
+console.log(solution("()()"));
+console.log(solution("(())()"));
+console.log(solution(")()("));
+console.log(solution("(()("));
