@@ -1,33 +1,24 @@
-// 의상
-function solution(clothes) {
-  let answer = 1;
-  const obj = {};
-  for (let i = 0; i < clothes.length; i++) {
-    obj.hasOwnProperty(clothes[i][1])
-      ? (obj[clothes[i][1]] += 1)
-      : (obj[clothes[i][1]] = 1);
-  }
+// 프로세스
+function solution(priorities, location) {
+  let answer = 0;
+  let MAX = Math.max(...priorities);
+  const idx = priorities.map((_, idx) => idx);
 
-  for (let key in obj) {
-    // 해당 종류의 의상을 입지 않는 경우까지 고려하여 +1
-    answer *= obj[key] + 1;
-  }
+  while (priorities) {
+    MAX = Math.max(...priorities);
 
-  // 모든 의상 입지 않는 경우 제외
-  return answer - 1;
+    if (priorities[0] < MAX) {
+      priorities.push(priorities.shift());
+      idx.push(idx.shift());
+    } else {
+      answer += 1;
+      priorities.shift();
+      if (idx.shift() === location) {
+        return answer;
+      }
+    }
+  }
 }
 
-console.log(
-  solution([
-    ["yellow_hat", "headgear"],
-    ["blue_sunglasses", "eyewear"],
-    ["green_turban", "headgear"],
-  ])
-);
-console.log(
-  solution([
-    ["crow_mask", "face"],
-    ["blue_sunglasses", "face"],
-    ["smoky_makeup", "face"],
-  ])
-);
+console.log(solution([2, 1, 3, 2], 2));
+console.log(solution([1, 1, 9, 1, 1, 1], 0));
