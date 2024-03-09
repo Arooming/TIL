@@ -54,6 +54,7 @@ function solution(maps) {
   // 갈 수 없는 곳이면 -1을 리턴하라고 했으니까 조건 추가
   return dist[N - 1][M - 1] === 1 ? -1 : dist[N - 1][M - 1];
 }
+
 console.log(
   solution([
     [1, 0, 1, 1, 1],
