@@ -1,46 +1,37 @@
-// 네트워크
-function solution(n, computers) {
-  const computer = computers;
-  const visited = Array(n).fill(0);
-  let answer = 0;
+// 의상
+function solution(clothes) {
+  let answer = 1;
+  const obj = {};
 
-  function dfs(now) {
-    // now라는 정점에 방문한 적 있으면 그대로 return;
-    if (visited[now]) {
-      return;
-    }
-
-    // now 방문처리
-    visited[now] = true;
-
-    for (let i = 0; i < computer.length; i++) {
-      if (computer[now][i] === 1) {
-        dfs(i);
-      }
-    }
+  for (let i = 0; i < clothes.length; i++) {
+    // clothes[i][1]에 해당하는 의상이 있는 경우, 해당 종류의 의상 개수 +1
+    // clothes[i][1]에 해당하는 의상이 없는 경우, 1로 초기화
+    // 아무것도 입지 않는 경우를 고려하여 +1
+    // obj[clothes[i][1]] = (obj[clothes[i][1]] || 1) + 1;
+    obj[clothes[i][1]] =
+      (obj.hasOwnProperty(clothes[i][1]) ? obj[clothes[i][1]]++ : 1) + 1;
   }
 
-  for (let i = 0; i < n; i++) {
-    if (!visited[i]) {
-      dfs(i);
-      answer++;
-    }
+  for (let key in obj) {
+    // 서로 다른 옷 조합 계산
+    answer *= obj[key];
   }
 
-  return answer;
+  // 아무 것도 입지 않는 경우 제외하기 위해 -1
+  return answer - 1;
 }
 
 console.log(
-  solution(3, [
-    [1, 1, 0],
-    [1, 1, 0],
-    [0, 0, 1],
+  solution([
+    ["yellow_hat", "headgear"],
+    ["blue_sunglasses", "eyewear"],
+    ["green_turban", "headgear"],
   ])
 );
 console.log(
-  solution(3, [
-    [1, 1, 0],
-    [1, 1, 1],
-    [0, 1, 1],
+  solution([
+    ["crow_mask", "face"],
+    ["blue_sunglasses", "face"],
+    ["smoky_makeup", "face"],
   ])
 );
