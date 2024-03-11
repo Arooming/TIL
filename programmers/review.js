@@ -1,37 +1,44 @@
-// 의상
-function solution(clothes) {
-  let answer = 1;
-  const obj = {};
+// 최소 직사각형
+function solution(sizes) {
+  const width = [];
+  const height = [];
 
-  for (let i = 0; i < clothes.length; i++) {
-    // clothes[i][1]에 해당하는 의상이 있는 경우, 해당 종류의 의상 개수 +1
-    // clothes[i][1]에 해당하는 의상이 없는 경우, 1로 초기화
-    // 아무것도 입지 않는 경우를 고려하여 +1
-    // obj[clothes[i][1]] = (obj[clothes[i][1]] || 1) + 1;
-    obj[clothes[i][1]] =
-      (obj.hasOwnProperty(clothes[i][1]) ? obj[clothes[i][1]]++ : 1) + 1;
+  for (let i = 0; i < sizes.length; i++) {
+    if (sizes[i][0] >= sizes[i][1]) {
+      width.push(sizes[i][0]);
+      height.push(sizes[i][1]);
+    } else {
+      width.push(sizes[i][1]);
+      height.push(sizes[i][0]);
+    }
   }
 
-  for (let key in obj) {
-    // 서로 다른 옷 조합 계산
-    answer *= obj[key];
-  }
-
-  // 아무 것도 입지 않는 경우 제외하기 위해 -1
-  return answer - 1;
+  return Math.max(...width) * Math.max(...height);
 }
 
 console.log(
   solution([
-    ["yellow_hat", "headgear"],
-    ["blue_sunglasses", "eyewear"],
-    ["green_turban", "headgear"],
+    [60, 50],
+    [30, 70],
+    [60, 30],
+    [80, 40],
   ])
 );
 console.log(
   solution([
-    ["crow_mask", "face"],
-    ["blue_sunglasses", "face"],
-    ["smoky_makeup", "face"],
+    [10, 7],
+    [12, 3],
+    [8, 15],
+    [14, 7],
+    [5, 15],
+  ])
+);
+console.log(
+  solution([
+    [14, 4],
+    [19, 6],
+    [6, 16],
+    [18, 7],
+    [7, 11],
   ])
 );
