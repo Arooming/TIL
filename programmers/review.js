@@ -1,78 +1,32 @@
-// 더 맵게
-class MinHeap {
-  constructor() {
-    this.heap = [];
+// 의상
+function solution(clothes) {
+  let answer = 1;
+  const obj = {};
+
+  for (let i = 0; i < clothes.length; i++) {
+    obj[clothes[i][1]] =
+      (obj.hasOwnProperty(clothes[i][1]) ? obj[clothes[i][1]]++ : 1) + 1;
   }
 
-  size() {
-    return this.heap.length;
+  for (let key in obj) {
+    answer *= obj[key];
   }
 
-  peek() {
-    return this.heap[0];
-  }
-
-  push(value) {
-    this.heap.push(value);
-
-    let curIdx = this.heap.length - 1;
-    while (
-      curIdx > 0 &&
-      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
-    ) {
-      const temp = this.heap[curIdx];
-      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
-      this.heap[Math.floor((curIdx - 1) / 2)] = temp;
-
-      curIdx = Math.floor((curIdx - 1) / 2);
-    }
-  }
-
-  pop() {
-    if (this.heap.length === 0) return null;
-    if (this.heap.lnegth === 1) return this.heap.pop();
-
-    const minValue = this.heap[0];
-    this.heap[0] = this.heap.pop();
-
-    let curIdx = 0;
-    while (curIdx * 2 + 1 < this.heap.length) {
-      const minChildIdx =
-        curIdx * 2 + 2 < this.heap.length &&
-        this.heap[curIdx * 2 + 2] < this.heap[curIdx * 2 + 1]
-          ? curIdx * 2 + 2
-          : curIdx * 2 + 1;
-
-      if (this.heap[curIdx] < this.heap[minChildIdx]) break;
-
-      const temp = this.heap[curIdx];
-      this.heap[curIdx] = this.heap[minChildIdx];
-      this.heap[minChildIdx] = temp;
-
-      curIdx = minChildIdx;
-    }
-
-    return minValue;
-  }
+  return answer - 1;
 }
 
-function solution(scoville, K) {
-  const minHeap = new MinHeap();
-  let cnt = 0;
+console.log(
+  solution([
+    ["yellow_hat", "headgear"],
+    ["blue_sunglasses", "eyewear"],
+    ["green_turban", "headgear"],
+  ])
+);
 
-  for (const sco of scoville) {
-    minHeap.push(sco);
-  }
-
-  while (minHeap.size() >= 2 && minHeap.peek() < K) {
-    const first = minHeap.pop();
-    const second = minHeap.pop();
-    const mixed = first + second * 2;
-    minHeap.push(mixed);
-    cnt++;
-  }
-
-  return minHeap.peek() < K ? -1 : cnt;
-}
-
-console.log(solution([1, 2, 3, 9, 10, 12], 7));
+console.log(
+  solution([
+    ["crow_mask", "face"],
+    ["blue_sunglasses", "face"],
+    ["smoky_makeup", "face"],
+  ])
+);
