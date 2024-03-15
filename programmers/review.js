@@ -1,31 +1,42 @@
-// 의상
-function solution(clothes) {
-  const obj = {};
-  let answer = 1;
+// 네트워크
+function solution(n, computers) {
+  let answer = 0;
+  const computer = computers;
+  const visited = Array(n).fill(0);
 
-  for (let i = 0; i < clothes.length; i++) {
-    obj[clothes[i][1]] =
-      (obj.hasOwnProperty(clothes[i][1]) ? obj[clothes[i][1]] : 1) + 1;
+  function dfs(now) {
+    if (visited[now]) return;
+
+    visited[now] = true;
+
+    for (let i = 0; i < computer.length; i++) {
+      if (computer[now][i] === 1) {
+        dfs(i);
+      }
+    }
   }
 
-  for (let key in obj) {
-    answer *= obj[key];
+  for (let i = 0; i < n; i++) {
+    if (!visited[i]) {
+      dfs(i);
+      answer++;
+    }
   }
 
-  return answer - 1;
+  return answer;
 }
 
 console.log(
-  solution([
-    ["yellow_hat", "headgear"],
-    ["blue_sunglasses", "eyewear"],
-    ["green_turban", "headgear"],
+  solution(3, [
+    [1, 1, 0],
+    [1, 1, 0],
+    [0, 0, 1],
   ])
 );
 console.log(
-  solution([
-    ["crow_mask", "face"],
-    ["blue_sunglasses", "face"],
-    ["smoky_makeup", "face"],
+  solution(3, [
+    [1, 1, 0],
+    [1, 1, 1],
+    [0, 1, 1],
   ])
 );
