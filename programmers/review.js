@@ -1,60 +1,44 @@
-// 게임 맵 최단거리
-function solution(maps) {
-  const n = maps.length;
-  const m = maps[0].length;
+// 소수찾기
+function solution(numbers) {
+  const getPermutations = (arr, selectNum) => {
+    const result = [];
+    if (selectNum === 1) return arr.map((it) => [it]);
 
-  const visited = Array(n)
-    .fill(0)
-    .map(() => Array(m).fill(0));
-  const dist = maps;
-  const queue = [];
+    arr.forEach((fixed, idx, origin) => {
+      const rest = [...origin.slice(0, idx), ...origin.slice(idx + 1)];
+      const permutations = getPermutations(rest, selectNum - 1);
+      const attach = permutations.map((el) => [fixed, ...el]);
 
-  const dx = [0, 0, -1, 1];
-  const dy = [-1, 1, 0, 0];
+      result.push(...attach);
+    });
 
-  queue.push([0, 0]);
-  visited[0][0] = true;
+    return result;
+  };
 
-  while (queue.length) {
-    let [x, y] = queue.shift();
+  const checkPrime = (num) => {
+    if (num < 2) return false;
 
-    for (let i = 0; i < 4; i++) {
-      const nx = dx[i] + x;
-      const ny = dy[i] + y;
-
-      if (nx < 0 || ny < 0 || nx >= n || ny >= m) {
-        continue;
-      }
-
-      if (maps[nx][ny] === 0) {
-        continue;
-      }
-
-      if (!visited[nx][ny]) {
-        queue.push([nx, ny]);
-        visited[nx][ny] = true;
-        dist[nx][ny] = dist[x][y] + 1;
-      }
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) return false;
     }
+
+    return true;
+  };
+
+  const answer = new Set();
+
+  for (let i = 1; i <= numbers.length; i++) {
+    const permutation = [...getPermutations([...numbers], i)];
+    const primeNum = permutation.filter((arr) =>
+      checkPrime(Number(arr.join("")))
+    );
+
+    primeNum.forEach((arr) => answer.add(Number(arr.join(""))));
   }
-  return dist[n - 1][m - 1] === 1 ? -1 : dist[n - 1][m - 1];
+
+  return answer.size;
 }
 
-console.log(
-  solution([
-    [1, 0, 1, 1, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1],
-    [1, 1, 1, 0, 1],
-    [0, 0, 0, 0, 1],
-  ])
-);
-console.log(
-  solution([
-    [1, 0, 1, 1, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1],
-    [1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 1],
-  ])
-);
+console.log(solution("17"));
+console.log(solution("011"));
+console.log(solution("123"));
