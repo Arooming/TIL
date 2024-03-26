@@ -3,19 +3,18 @@ function solution(numbers) {
   const getPermutations = (arr, selectNum) => {
     const result = [];
     if (selectNum === 1) return arr.map((it) => [it]);
-
     arr.forEach((fixed, idx, origin) => {
       const rest = [...origin.slice(0, idx), ...origin.slice(idx + 1)];
-      const permutations = getPermutations(rest, selectNum - 1);
-      const attach = permutations.map((el) => [fixed, ...el]);
+      const permutation = getPermutations(rest, selectNum - 1);
+      const attatch = permutation.map((el) => [fixed, ...el]);
 
-      result.push(...attach);
+      result.push(...attatch);
     });
 
     return result;
   };
 
-  const checkPrime = (num) => {
+  const checkPrimeNum = (num) => {
     if (num < 2) return false;
 
     for (let i = 2; i <= Math.sqrt(num); i++) {
@@ -26,14 +25,13 @@ function solution(numbers) {
   };
 
   const answer = new Set();
-
   for (let i = 1; i <= numbers.length; i++) {
     const permutation = [...getPermutations([...numbers], i)];
-    const primeNum = permutation.filter((arr) =>
-      checkPrime(Number(arr.join("")))
-    );
+    const primeNum = permutation.filter((arr) => checkPrimeNum(+arr.join("")));
 
-    primeNum.forEach((arr) => answer.add(Number(arr.join(""))));
+    primeNum.forEach((arr) => {
+      answer.add(+arr.join(""));
+    });
   }
 
   return answer.size;
