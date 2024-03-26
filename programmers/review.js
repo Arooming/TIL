@@ -1,41 +1,79 @@
-// 네트워크
-function solution(n, computers) {
-  const visited = Array(n).fill(0);
-  const computer = computers;
-  let answer = 0;
+class MinHeap {
+  constructor() {
+    this.heap = [];
+  }
 
-  function dfs(now) {
-    if (visited[now]) return;
+  size() {
+    return this.heap.length;
+  }
 
-    visited[now] = true;
-    for (let i = 0; i < computer.length; i++) {
-      if (computer[now][i] === 1) {
-        dfs(i);
-      }
+  peek() {
+    return this.heap[0];
+  }
+
+  push(value) {
+    this.heap.push(value);
+    let curIdx = this.heap.length - 1;
+
+    while (
+      curIdx > 0 &&
+      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
+    ) {
+      const temp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
+      this.heap[Math.floor((curIdx - 1) / 2)] = temp;
+
+      curIdx = Math.floor((curIdx - 1) / 2);
     }
   }
 
-  for (let i = 0; i < n; i++) {
-    if (!visited[i]) {
-      dfs(i);
-      answer++;
-    }
-  }
+  pop() {
+    if (this.heap.length === 0) return null;
+    if (this.heap.length === 1) return this.heap.pop();
 
-  return answer;
+    const minValue = this.heap[0];
+    this.heap[0] = this.heap.pop();
+
+    let curIdx = 0;
+
+    while (curIdx * 2 + 1 < this.heap.length) {
+      const minChildIdx =
+        curIdx * 2 + 2 < this.heap.length &&
+        this.heap[curIdx * 2 + 2] < this.heap[curIdx * 2 + 1]
+          ? curIdx * 2 + 2
+          : curIdx * 2 + 1;
+
+      if (this.heap[minChildIdx] > this.heap[curIdx]) break;
+
+      const temp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[minChildIdx];
+      this.heap[minChildIdx] = temp;
+
+      curIdx = minChildIdx;
+    }
+
+    return minValue;
+  }
 }
 
-console.log(
-  solution(3, [
-    [1, 1, 0],
-    [1, 1, 0],
-    [0, 0, 1],
-  ])
-);
-console.log(
-  solution(3, [
-    [1, 1, 0],
-    [1, 1, 1],
-    [0, 1, 1],
-  ])
-);
+function solution(scoville, K) {
+  const minHeap = new MinHeap();
+  let answer = 0;
+
+  for (const sco in scoville) {
+    minHeap.push(sco);
+  }
+
+  while (minHeap.peek() < K && minHeap.size() >= 2) {
+    const first = minHeap.pop();
+    const second = minHeap.pop();
+    const mixed = first + second * 2;
+
+    minHeap.push(mixed);
+    answer++;
+  }
+
+  return minHeap.peek() < K ? -1 : answer;
+}
+
+console.log(solution([1, 2, 3, 9, 10, 12], 7));
