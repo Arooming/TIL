@@ -1,28 +1,42 @@
-// 모음 사전
-function solution(word) {
-  const result = [];
-  const str = "";
+// 소수 찾기
+function solution(numbers) {
+  function getPermutaion(arr, n) {
+    const result = [];
+    if (n === 1) return arr.map((it) => [it]);
 
-  const dfs = (word, length, result) => {
-    const arr = [..."AEIOU"];
-    if (length === word.length) {
-      result.push(word);
-      return;
-    }
+    arr.forEach((fixed, idx, origin) => {
+      const rest = [...origin.slice(0, idx), ...origin.slice(idx + 1)];
+      const permutation = getPermutaion(rest, n - 1);
+      const attached = permutation.map((it) => [...it, fixed]);
 
-    arr.forEach((it) => {
-      dfs(word + it, length, result);
+      result.push(...attached);
     });
-  };
 
-  for (let i = 1; i <= 5; i++) {
-    dfs(str, i, result);
+    return result;
   }
 
-  return result.sort().indexOf(word) + 1;
+  function getPrimeNum(num) {
+    if (num < 2) return false;
+
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) return false;
+    }
+    return true;
+  }
+
+  const answer = new Set();
+
+  for (let i = 1; i <= numbers.length; i++) {
+    const permutation = getPermutaion([...numbers], i);
+    const primeNum = permutation.filter((perm) => getPrimeNum(+perm.join("")));
+
+    primeNum.forEach((prime) => {
+      answer.add(+prime.join(""));
+    });
+  }
+
+  return answer.size;
 }
 
-console.log(solution("AAAAE"));
-console.log(solution("AAAE"));
-console.log(solution("I"));
-console.log(solution("EIO"));
+console.log(solution("17"));
+console.log(solution("011"));
