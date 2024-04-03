@@ -1,18 +1,30 @@
-// 카펫
-function solution(brown, yellow) {
-  const sum = brown + yellow;
-  for (let x = 2; x <= Math.sqrt(sum); x++) {
-    if (sum % x === 0) {
-      const y = sum / x;
-      if ((x - 2) * (y - 2) === yellow) {
-        return x >= y ? [x, y] : [y, x];
+// 피로도
+function solution(k, dungeons) {
+  const visited = Array(dungeons.length).fill(0);
+
+  let answer = 0;
+
+  const dfs = (count, k) => {
+    for (let i = 0; i < dungeons.length; i++) {
+      if (dungeons[i][0] <= k && !visited[i]) {
+        visited[i] = true;
+        dfs(count + 1, k - dungeons[i][1]);
+        visited[i] = false;
       }
     }
-  }
+
+    answer = Math.max(count, answer);
+  };
+
+  dfs(0, k);
+
+  return answer;
 }
 
-console.log(solution(10, 2));
-console.log(solution(8, 1));
-console.log(solution(24, 24));
-// 예외처리를 해주지 않으면 에러가 발생하는 케이스
-console.log(solution(18, 6));
+console.log(
+  solution(80, [
+    [80, 20],
+    [50, 40],
+    [30, 10],
+  ])
+);
