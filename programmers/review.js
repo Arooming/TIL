@@ -1,24 +1,22 @@
 // 피로도
 function solution(k, dungeons) {
   const visited = Array(dungeons.length).fill(0);
+  let answer = [];
 
-  let answer = 0;
-
-  const dfs = (count, k) => {
+  const dfs = (count, now) => {
     for (let i = 0; i < dungeons.length; i++) {
-      if (dungeons[i][0] <= k && !visited[i]) {
+      if (!visited[i] && now >= dungeons[i][0]) {
         visited[i] = true;
-        dfs(count + 1, k - dungeons[i][1]);
+        dfs(count + 1, now - dungeons[i][1]);
         visited[i] = false;
       }
     }
-
-    answer = Math.max(count, answer);
+    answer.push(count);
   };
 
   dfs(0, k);
 
-  return answer;
+  return Math.max(...answer);
 }
 
 console.log(
