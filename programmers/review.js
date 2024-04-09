@@ -1,27 +1,19 @@
-// 모음 사전
-function solution(word) {
-  const arr = [];
-  let str = "";
+// 체육복
+function solution(n, lost, reserve) {
+  let lost_student = lost.filter((it) => !reserve.includes(it)).sort();
+  let reserve_student = reserve.filter((it) => !lost.includes(it)).sort();
 
-  for (let i = 1; i <= 5; i++) {
-    dfs(str, i, arr);
-  }
-
-  function dfs(str, length, arr) {
-    const words = [..."AEIOU"];
-    if (str.length === length) {
-      arr.push(str);
-      return;
+  for (let i = 0; i < n; i++) {
+    if (lost_student.includes(reserve_student[i] - 1)) {
+      lost_student = lost_student.filter((it) => it !== reserve_student[i] - 1);
+    } else if (lost_student.includes(reserve_student[i] + 1)) {
+      lost_student = lost_student.filter((it) => it !== reserve_student[i] + 1);
     }
-
-    words.forEach((word) => {
-      dfs(word + str, length, arr);
-    });
   }
-  return arr.sort().indexOf(word) + 1;
+
+  return n - lost_student.length;
 }
 
-console.log(solution("AAAAE"));
-console.log(solution("AAAE"));
-console.log(solution("I"));
-console.log(solution("EIO"));
+console.log(solution(5, [2, 4], [1, 3, 5]));
+console.log(solution(5, [2, 4], [3]));
+console.log(solution(3, [3], [1]));
