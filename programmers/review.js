@@ -1,27 +1,28 @@
-// 피로도
-function solution(k, dungeons) {
-  const visited = Array(dungeons.length).fill(0);
-  let answer = 0;
+// 모음 사전
+function solution(word) {
+  const str = "";
+  const arr = [];
 
-  function dfs(cnt, now) {
-    for (let i = 0; i < dungeons.length; i++) {
-      if (!visited[i] && dungeons[i][0] <= now) {
-        visited[i] = true;
-        dfs(cnt + 1, now - dungeons[i][1]);
-        visited[i] = false;
-      }
-    }
-    answer = Math.max(answer, cnt);
+  for (let i = 1; i <= 5; i++) {
+    dfs(str, i, arr);
   }
-  dfs(0, k);
 
-  return answer;
+  function dfs(str, length, arr) {
+    const vowels = [..."AEIOU"];
+    if (str.length === length) {
+      arr.push(str);
+      return;
+    }
+
+    vowels.forEach((vowel) => {
+      dfs(str + vowel, length, arr);
+    });
+  }
+
+  return arr.sort().indexOf(word) + 1;
 }
 
-console.log(
-  solution(80, [
-    [80, 20],
-    [50, 40],
-    [30, 10],
-  ])
-);
+console.log(solution("AAAAE"));
+console.log(solution("AAAE"));
+console.log(solution("I"));
+console.log(solution("EIO"));
