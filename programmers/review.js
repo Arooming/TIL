@@ -1,30 +1,21 @@
-// 조이스틱
-function solution(name) {
-  let answer = 0;
-  let minMove = name.length - 1;
-  const nameArr = [...name];
+// 큰 수 만들기
+function solution(number, k) {
+  const answer = [];
 
-  nameArr.map((n, i) => {
-    answer += Math.min(
-      n.charCodeAt() - "A".charCodeAt(),
-      "Z".charCodeAt() + 1 - n.charCodeAt()
-    );
-
-    let idx = i + 1;
-
-    while (name[idx] === "A" && idx < name.length) {
-      idx++;
+  for (const i of number) {
+    while (k > 0 && answer[answer.length - 1] < i) {
+      answer.pop();
+      k--;
     }
+    answer.push(i);
+  }
 
-    minMove = Math.min(
-      minMove,
-      i * 2 + (name.length - idx),
-      i + 2 * (name.length - idx)
-    );
-  });
+  // k가 0보다 큰 경우 뒤에서부터 k만큼 자르기
+  answer.splice(answer.length - k, k);
 
-  return answer + minMove;
+  return answer.join("");
 }
 
-console.log(solution("JEROEN"));
-console.log(solution("JAN"));
+console.log(solution("1924", 2));
+console.log(solution("1231234", 3));
+console.log(solution("4177252841", 4));
