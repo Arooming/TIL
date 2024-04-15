@@ -1,5 +1,5 @@
 // 구명보트 - 투포인터 활용이 핵심!
-// 오름차순 정렬 풀이 - 이게 효율성이 더 좋음!
+// 내림차순 정렬 풀이 - 이게 효율성이 더 좋음!
 function solution(people, limit) {
   var answer = 0;
 
@@ -19,7 +19,7 @@ console.log(solution([70, 50, 80], 100));
 // 이해를 돕기 위한 새로운 테스트 케이스 추가
 console.log(solution([10, 60, 20, 30], 100));
 
-// 내림차순 정렬  풀이
+// 오름차순 정렬  풀이
 /*
 function solution(people, limit) {
   var answer = 0;
