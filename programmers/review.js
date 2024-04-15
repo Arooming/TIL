@@ -1,21 +1,15 @@
-// 큰 수 만들기
-function solution(number, k) {
-  const answer = [];
-
-  for (const i of number) {
-    while (k > 0 && answer[answer.length - 1] < i) {
-      answer.pop();
-      k--;
+// 구명보트
+function solution(people, limit) {
+  let cnt = 0;
+  people.sort((a, b) => b - a);
+  for (let i = 0, j = people.length - 1; i <= j; i++) {
+    if (people[i] + people[j] <= limit) {
+      j--;
     }
-    answer.push(i);
+    cnt++;
   }
-
-  // k가 0보다 큰 경우 뒤에서부터 k만큼 자르기
-  answer.splice(answer.length - k, k);
-
-  return answer.join("");
+  return cnt;
 }
 
-console.log(solution("1924", 2));
-console.log(solution("1231234", 3));
-console.log(solution("4177252841", 4));
+console.log(solution([70, 50, 80, 50], 100));
+console.log(solution([70, 80, 50], 100));
