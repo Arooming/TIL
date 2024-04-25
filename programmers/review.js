@@ -1,22 +1,43 @@
-// 모의고사
-function solution(answers) {
-  const answer = [0, 0, 0];
-  const result = [];
-  const a = [1, 2, 3, 4, 5];
-  const b = [2, 1, 2, 3, 2, 4, 2, 5];
-  const c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
+// 소수찾기
+function solution(numbers) {
+  function getPermutations(arr, selectNum) {
+    const result = [];
+    if (selectNum === 1) return arr.map((v) => [v]);
 
-  for (let i = 0; i < answers.length; i++) {
-    if (answers[i] === a[i % a.length]) answer[0]++;
-    if (answers[i] === b[i % b.length]) answer[1]++;
-    if (answers[i] === c[i % c.length]) answer[2]++;
+    arr.forEach((fixed, idx, origin) => {
+      const rest = [...origin.slice(0, idx), ...origin.slice(idx + 1)];
+      const permutation = getPermutations(rest, selectNum - 1);
+      const attatch = permutation.map((el) => [fixed, ...el]);
+
+      result.push(...attatch);
+    });
+
+    return result;
   }
 
-  const maxNum = Math.max(...answer);
-  answer.map((it, idx) => it === maxNum && result.push(idx + 1));
+  function checkPrimeNum(num) {
+    if (num < 2) return false;
 
-  return result;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) return false;
+    }
+
+    return true;
+  }
+
+  const answer = new Set();
+  for (let i = 1; i <= numbers.length; i++) {
+    const permutation = [...getPermutations([...numbers], i)];
+    const primeNum = permutation.filter((arr) => {
+      return checkPrimeNum(+arr.join(""));
+    });
+
+    primeNum.forEach((arr) => {
+      answer.add(+arr.join(""));
+    });
+  }
+  return answer.size;
 }
 
-console.log(solution([1, 2, 3, 4, 5]));
-console.log(solution([1, 3, 2, 4, 2]));
+console.log(solution("17"));
+console.log(solution("011"));
