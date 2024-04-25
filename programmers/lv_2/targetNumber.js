@@ -16,12 +16,10 @@ function solution(numbers, target) {
     // 수행 동작: 하나의 노드 당 두 번의 연산(+, -)
     dfs(idx + 1, sum + numbers[idx]);
     dfs(idx + 1, sum - numbers[idx]);
-
-    console.log(idx)
   }
 
   return answer;
 }
 
 console.log(solution([1, 1, 1, 1, 1], 3));
-// console.log(solution([4, 1, 2, 1], 4));
+console.log(solution([4, 1, 2, 1], 4));
