@@ -1,15 +1,21 @@
-// 구명보트
-function solution(people, limit) {
-  let cnt = 0;
-  people.sort((a, b) => b - a);
-  for (let i = 0, j = people.length - 1; i <= j; i++) {
-    if (people[i] + people[j] <= limit) {
-      j--;
+// 타겟 넘버
+function solution(numbers, target) {
+  let answer = 0;
+
+  dfs(0, 0);
+
+  function dfs(sum, idx) {
+    if (idx === numbers.length) {
+      sum === target && answer++;
+      return;
     }
-    cnt++;
+
+    dfs(sum + numbers[idx], idx + 1);
+    dfs(sum - numbers[idx], idx + 1);
   }
-  return cnt;
+
+  return answer;
 }
 
-console.log(solution([70, 50, 80, 50], 100));
-console.log(solution([70, 80, 50], 100));
+console.log(solution([1, 1, 1, 1, 1], 3));
+console.log(solution([4, 1, 2, 1], 4));
