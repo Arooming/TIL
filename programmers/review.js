@@ -1,42 +1,22 @@
-// 최소 직사각형
-function solution(sizes) {
-  const sortedSizes = sizes.map((size) =>
-    size[0] > size[1] ? [size[0], size[1]] : [size[1], size[0]]
-  );
-  const width = sortedSizes.map((sortedSize) => {
-    return sortedSize[0];
-  });
+// 모의고사
+function solution(answers) {
+  const answer = [0, 0, 0];
+  const result = [];
+  const a = [1, 2, 3, 4, 5];
+  const b = [2, 1, 2, 3, 2, 4, 2, 5];
+  const c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
 
-  const height = sortedSizes.map((sortedSize) => {
-    return sortedSize[1];
-  });
+  for (let i = 0; i < answers.length; i++) {
+    if (answers[i] === a[i % a.length]) answer[0]++;
+    if (answers[i] === b[i % b.length]) answer[1]++;
+    if (answers[i] === c[i % c.length]) answer[2]++;
+  }
 
-  return Math.max(...width) * Math.max(...height);
+  const maxNum = Math.max(...answer);
+  answer.map((it, idx) => it === maxNum && result.push(idx + 1));
+
+  return result;
 }
 
-console.log(
-  solution([
-    [60, 50],
-    [30, 70],
-    [60, 30],
-    [80, 40],
-  ])
-);
-console.log(
-  solution([
-    [10, 7],
-    [12, 3],
-    [8, 15],
-    [14, 7],
-    [5, 15],
-  ])
-);
-console.log(
-  solution([
-    [14, 4],
-    [19, 6],
-    [6, 16],
-    [18, 7],
-    [7, 11],
-  ])
-);
+console.log(solution([1, 2, 3, 4, 5]));
+console.log(solution([1, 3, 2, 4, 2]));
