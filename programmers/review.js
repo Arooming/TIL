@@ -1,21 +1,32 @@
-// 타겟 넘버
-function solution(numbers, target) {
-  let answer = 0;
-
-  dfs(0, 0);
-
-  function dfs(sum, idx) {
-    if (idx === numbers.length) {
-      sum === target && answer++;
-      return;
+// 단어 변환
+function solution(begin, target, words) {
+  var answer = 0;
+  function checkWordCount(str1, str2) {
+    let cnt = 0;
+    for (let i = 0; i < str1.length; i++) {
+      if (str1[i] !== str2[i]) cnt++;
     }
-
-    dfs(sum + numbers[idx], idx + 1);
-    dfs(sum - numbers[idx], idx + 1);
+    return cnt === 1;
   }
 
-  return answer;
+  const queue = [begin];
+  const visited = {};
+  visited[begin] = 0;
+
+  while (queue.length) {
+    const cur = queue.shift();
+
+    if (cur === target) break;
+
+    for (const word of words) {
+      if (checkWordCount(word, cur) && !visited[word]) {
+        queue.push(word);
+        visited[word] = visited[cur] + 1;
+      }
+    }
+  }
+  return visited[target] ? visited[target] : 0;
 }
 
-console.log(solution([1, 1, 1, 1, 1], 3));
-console.log(solution([4, 1, 2, 1], 4));
+console.log(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]));
+console.log(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log"]));
