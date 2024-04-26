@@ -1,32 +1,27 @@
-// 단어 변환
-function solution(begin, target, words) {
-  const queue = [];
-  const visited = {};
-  queue.push(begin);
-  visited[begin] = 0;
+// 모음 사전
+function solution(word) {
+  let str = "";
+  const result = [];
 
-  function canChange(str1, str2) {
-    let cnt = 0;
-    for (let i = 0; i < str1.length; i++) {
-      str1[i] !== str2[i] && cnt++;
-    }
-    return cnt === 1;
+  for (let i = 1; i <= 5; i++) {
+    dfs(str, i, result);
   }
 
-  while (queue.length) {
-    const cur = queue.shift();
+  function dfs(str, length, result) {
+    const vowels = [..."AEIOU"];
+    if (str.length === length) {
+      return result.push(str);
+    }
 
-    if (cur === target) break;
-
-    words.forEach((word) => {
-      if (canChange(cur, word) && !visited[word]) {
-        queue.push(word);
-        visited[word] = visited[cur] + 1;
-      }
+    vowels.forEach((vowel) => {
+      dfs(str + vowel, length, result);
     });
   }
-  return visited[target] ? visited[target] : 0;
+
+  return result.sort().indexOf(word) + 1;
 }
 
-console.log(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]));
-console.log(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log"]));
+console.log(solution("AAAAE"));
+console.log(solution("AAAE"));
+console.log(solution("I"));
+console.log(solution("EIO"));
