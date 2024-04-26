@@ -1,29 +1,63 @@
-// 피로도
-function solution(k, dungeons) {
-  const visited = Array(dungeons.length).fill(0);
-  let answer = 0;
+// 전력망을 둘로 나누기
+function solution(n, wires) {
+  let cnt = 0;
+  let answer = Number.MAX_VALUE;
 
-  function dfs(cnt, start) {
-    for (let i = 0; i < dungeons.length; i++) {
-      if (!visited[i] && dungeons[i][0] <= start) {
-        visited[i] = 1;
-        dfs(cnt + 1, start - dungeons[i][1]);
-        visited[i] = 0;
-      }
-    }
-
-    // 최대 던전 수 - 제일 깊게 들어간 진행단계
-    answer = Math.max(cnt, answer);
+  while (wires.length !== cnt) {
+    let cur = wires.shift();
+    answer = Math.min(answer, Math.abs(bfs(cur[0]) - bfs(cur[1])));
+    wires.push(cur);
+    cnt++;
   }
-  dfs(0, k);
+
+  function bfs(node) {
+    const visited = [];
+    const needVisit = [node];
+
+    while (needVisit.length) {
+      const cur = needVisit.shift();
+      wires.forEach((wire) => {
+        if (wire.includes(cur)) {
+          const other = wire[0] === cur ? wire[1] : wire[0];
+          if (!visited.includes(other)) {
+            needVisit.push(other);
+          }
+        }
+      });
+      visited.push(cur);
+    }
+    return visited.length;
+  }
 
   return answer;
 }
 
 console.log(
-  solution(80, [
-    [80, 20],
-    [30, 10],
-    [50, 40],
+  solution(9, [
+    [1, 3],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [4, 6],
+    [4, 7],
+    [7, 8],
+    [7, 9],
+  ])
+);
+console.log(
+  solution(4, [
+    [1, 2],
+    [2, 3],
+    [3, 4],
+  ])
+);
+console.log(
+  solution(7, [
+    [1, 2],
+    [2, 7],
+    [3, 7],
+    [3, 4],
+    [4, 5],
+    [6, 7],
   ])
 );
