@@ -1,43 +1,22 @@
-// 소수찾기
-function solution(numbers) {
-  function getPermutations(arr, selectNum) {
-    const result = [];
-    if (selectNum === 1) return arr.map((v) => [v]);
+// 카펫
+// brown + yellow = x * y
+// (x-2) * (y-2) = yellow
+function solution(brown, yellow) {
+  let sum = brown + yellow;
 
-    arr.forEach((fixed, idx, origin) => {
-      const rest = [...origin.slice(0, idx), ...origin.slice(idx + 1)];
-      const permutation = getPermutations(rest, selectNum - 1);
-      const attatch = permutation.map((el) => [fixed, ...el]);
-
-      result.push(...attatch);
-    });
-
-    return result;
-  }
-
-  function checkPrimeNum(num) {
-    if (num < 2) return false;
-
-    for (let i = 2; i <= Math.sqrt(num); i++) {
-      if (num % i === 0) return false;
+  for (let i = 2; i <= Math.sqrt(sum); i++) {
+    const x = i;
+    if (sum % i === 0) {
+      const y = sum / i;
+      if ((x - 2) * (y - 2) === yellow) {
+        return x > y ? [x, y] : [y, x];
+      }
     }
-
-    return true;
   }
-
-  const answer = new Set();
-  for (let i = 1; i <= numbers.length; i++) {
-    const permutation = [...getPermutations([...numbers], i)];
-    const primeNum = permutation.filter((arr) => {
-      return checkPrimeNum(+arr.join(""));
-    });
-
-    primeNum.forEach((arr) => {
-      answer.add(+arr.join(""));
-    });
-  }
-  return answer.size;
 }
 
-console.log(solution("17"));
-console.log(solution("011"));
+console.log(solution(10, 2));
+console.log(solution(8, 1));
+console.log(solution(24, 24));
+// 예외처리를 해주지 않으면 에러가 발생하는 케이스
+console.log(solution(18, 6));
