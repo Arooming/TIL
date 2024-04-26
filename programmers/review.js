@@ -1,22 +1,29 @@
-// 카펫
-// brown + yellow = x * y
-// (x-2) * (y-2) = yellow
-function solution(brown, yellow) {
-  let sum = brown + yellow;
+// 피로도
+function solution(k, dungeons) {
+  const visited = Array(dungeons.length).fill(0);
+  let answer = 0;
 
-  for (let i = 2; i <= Math.sqrt(sum); i++) {
-    const x = i;
-    if (sum % i === 0) {
-      const y = sum / i;
-      if ((x - 2) * (y - 2) === yellow) {
-        return x > y ? [x, y] : [y, x];
+  function dfs(cnt, start) {
+    for (let i = 0; i < dungeons.length; i++) {
+      if (!visited[i] && dungeons[i][0] <= start) {
+        visited[i] = 1;
+        dfs(cnt + 1, start - dungeons[i][1]);
+        visited[i] = 0;
       }
     }
+
+    // 최대 던전 수 - 제일 깊게 들어간 진행단계
+    answer = Math.max(cnt, answer);
   }
+  dfs(0, k);
+
+  return answer;
 }
 
-console.log(solution(10, 2));
-console.log(solution(8, 1));
-console.log(solution(24, 24));
-// 예외처리를 해주지 않으면 에러가 발생하는 케이스
-console.log(solution(18, 6));
+console.log(
+  solution(80, [
+    [80, 20],
+    [30, 10],
+    [50, 40],
+  ])
+);
