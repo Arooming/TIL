@@ -1,63 +1,32 @@
-// 전력망을 둘로 나누기
-function solution(n, wires) {
-  let cnt = 0;
-  let answer = Number.MAX_VALUE;
+// 단어 변환
+function solution(begin, target, words) {
+  const queue = [];
+  const visited = {};
+  queue.push(begin);
+  visited[begin] = 0;
 
-  while (wires.length !== cnt) {
-    let cur = wires.shift();
-    answer = Math.min(answer, Math.abs(bfs(cur[0]) - bfs(cur[1])));
-    wires.push(cur);
-    cnt++;
-  }
-
-  function bfs(node) {
-    const visited = [];
-    const needVisit = [node];
-
-    while (needVisit.length) {
-      const cur = needVisit.shift();
-      wires.forEach((wire) => {
-        if (wire.includes(cur)) {
-          const other = wire[0] === cur ? wire[1] : wire[0];
-          if (!visited.includes(other)) {
-            needVisit.push(other);
-          }
-        }
-      });
-      visited.push(cur);
+  function canChange(str1, str2) {
+    let cnt = 0;
+    for (let i = 0; i < str1.length; i++) {
+      str1[i] !== str2[i] && cnt++;
     }
-    return visited.length;
+    return cnt === 1;
   }
 
-  return answer;
+  while (queue.length) {
+    const cur = queue.shift();
+
+    if (cur === target) break;
+
+    words.forEach((word) => {
+      if (canChange(cur, word) && !visited[word]) {
+        queue.push(word);
+        visited[word] = visited[cur] + 1;
+      }
+    });
+  }
+  return visited[target] ? visited[target] : 0;
 }
 
-console.log(
-  solution(9, [
-    [1, 3],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [4, 6],
-    [4, 7],
-    [7, 8],
-    [7, 9],
-  ])
-);
-console.log(
-  solution(4, [
-    [1, 2],
-    [2, 3],
-    [3, 4],
-  ])
-);
-console.log(
-  solution(7, [
-    [1, 2],
-    [2, 7],
-    [3, 7],
-    [3, 4],
-    [4, 5],
-    [6, 7],
-  ])
-);
+console.log(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]));
+console.log(solution("hit", "cog", ["hot", "dot", "dog", "lot", "log"]));
