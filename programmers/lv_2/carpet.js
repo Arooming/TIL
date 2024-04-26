@@ -1,24 +1,18 @@
 // 카펫
+// brown + yellow = x * y
+// (x-2) * (y-2) = yellow
 function solution(brown, yellow) {
-  const width = brown + yellow;
-  let arr = [];
+  let sum = brown + yellow;
 
-  for (let i = 1; i <= width; i++) {
-    if (width % i === 0) {
-      arr.push(i);
+  for (let i = 2; i <= Math.sqrt(sum); i++) {
+    const x = i;
+    if (sum % i === 0) {
+      const y = sum / i;
+      if ((x - 2) * (y - 2) === yellow) {
+        return x > y ? [x, y] : [y, x];
+      }
     }
   }
-
-  let x = Math.ceil((arr.length - 1) / 2);
-  let y = Math.floor((arr.length - 1) / 2);
-
-  // 예외처리!
-  while (arr[x] + arr[y] !== brown / 2 + 2) {
-    x -= 1;
-    y += 1;
-  }
-
-  return arr[x] > arr[y] ? [arr[x], arr[y]] : [arr[y], arr[x]];
 }
 
 console.log(solution(10, 2));
