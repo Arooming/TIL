@@ -1,5 +1,4 @@
 // 조이스틱
-// 조이스틱
 function solution(name) {
   const nameArr = [...name];
   // 커서 이동 횟수: 문자열에 'A'가 없다면 이게 커서 최소 이동 횟수임.
