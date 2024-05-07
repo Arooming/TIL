@@ -1,14 +1,25 @@
-// 의상
-function solution(clothes) {
-  let obj = {};
-  let answer = 1;
+// 기능개발
+function solution(progresses, speeds) {
+  const answer = [];
+  let cnt = 1;
+  const remainders = progresses.map((progress) => {
+    return 100 - progress;
+  });
+  const days = remainders.map((remainder, idx) => {
+    return Math.ceil(remainder / speeds[idx]);
+  });
 
-  for (let i = 0; i < clothes.length; i++) {
-    obj[clothes[i][1]] = obj[clothes[i][1]] ? obj[clothes[i][1]] + 1 : 1;
+  let MAX = days[0];
+  for (let i = 1; i < days.length; i++) {
+    if (MAX >= days[i]) {
+      cnt++;
+    } else {
+      answer.push(cnt);
+      cnt = 1;
+      MAX = days[i];
+    }
   }
+  answer.push(cnt);
 
-  for (const key in obj) {
-    answer *= obj[key] + 1;
-  }
-  return answer - 1;
+  return answer;
 }
