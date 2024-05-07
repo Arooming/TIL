@@ -1,13 +1,14 @@
-// 전화번호 목록
-function solution(phone_book) {
-  const sortedArr = phone_book.sort();
+// 의상
+function solution(clothes) {
+  let obj = {};
+  let answer = 1;
 
-  for (let i = 0; i < sortedArr.length - 1; i++) {
-    if (sortedArr[i + 1].slice(0, sortedArr[i].length) === sortedArr[i]) {
-      return false;
-    }
+  for (let i = 0; i < clothes.length; i++) {
+    obj[clothes[i][1]] = obj[clothes[i][1]] ? obj[clothes[i][1]] + 1 : 1;
   }
-  return true;
+
+  for (const key in obj) {
+    answer *= obj[key] + 1;
+  }
+  return answer - 1;
 }
-console.log(solution(["119", "97674223", "1195524421"]));
-console.log(solution(["123", "456", "789"]));
