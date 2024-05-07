@@ -1,17 +1,13 @@
-// 구명보트
-function solution(people, limit) {
-  let answer = 0;
-  let sortedPeople = people.sort((a, b) => b - a);
+// 전화번호 목록
+function solution(phone_book) {
+  const sortedArr = phone_book.sort();
 
-  for (let i = 0, j = people.length - 1; i <= j; i++) {
-    if (sortedPeople[i] + sortedPeople[j] <= limit) {
-      j--;
+  for (let i = 0; i < sortedArr.length - 1; i++) {
+    if (sortedArr[i + 1].slice(0, sortedArr[i].length) === sortedArr[i]) {
+      return false;
     }
-    answer++;
   }
-
-  return answer;
+  return true;
 }
-
-console.log(solution([70, 50, 80, 50], 100));
-console.log(solution([70, 80, 50], 100));
+console.log(solution(["119", "97674223", "1195524421"]));
+console.log(solution(["123", "456", "789"]));
