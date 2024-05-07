@@ -1,25 +1,15 @@
-// 기능개발
-function solution(progresses, speeds) {
-  const answer = [];
-  let cnt = 1;
-  const remainders = progresses.map((progress) => {
-    return 100 - progress;
-  });
-  const days = remainders.map((remainder, idx) => {
-    return Math.ceil(remainder / speeds[idx]);
-  });
+// 올바른 괄호
+function solution(s) {
+  const stack = [];
 
-  let MAX = days[0];
-  for (let i = 1; i < days.length; i++) {
-    if (MAX >= days[i]) {
-      cnt++;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      stack.push("(");
     } else {
-      answer.push(cnt);
-      cnt = 1;
-      MAX = days[i];
+      if (stack.length === 0) return false;
+      stack.pop();
     }
   }
-  answer.push(cnt);
 
-  return answer;
+  return stack.length === 0;
 }
