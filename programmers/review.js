@@ -1,15 +1,20 @@
-// 올바른 괄호
-function solution(s) {
-  const stack = [];
+// 프로세스
+function solution(priorities, location) {
+  var answer = 0;
+  const prioIdx = priorities.map((_, idx) => {
+    return idx;
+  });
 
-  for (let i = 0; i < s.length; i++) {
-    if (s[i] === "(") {
-      stack.push("(");
+  while (priorities) {
+    const MAX = Math.max(...priorities);
+    const shiftedPrio = priorities.shift();
+
+    if (shiftedPrio < MAX) {
+      priorities.push(shiftedPrio);
+      prioIdx.push(prioIdx.shift());
     } else {
-      if (stack.length === 0) return false;
-      stack.pop();
+      answer++;
+      if (prioIdx.shift() === location) return answer;
     }
   }
-
-  return stack.length === 0;
 }
