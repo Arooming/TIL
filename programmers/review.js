@@ -1,20 +1,10 @@
-// 프로세스
-function solution(priorities, location) {
-  var answer = 0;
-  const prioIdx = priorities.map((_, idx) => {
-    return idx;
-  });
+// 가장 큰 수
+function solution(numbers) {
+  const numbersToStr = numbers
+    .map((num) => {
+      return num.toString();
+    })
+    .sort((a, b) => b + a - (a + b));
 
-  while (priorities) {
-    const MAX = Math.max(...priorities);
-    const shiftedPrio = priorities.shift();
-
-    if (shiftedPrio < MAX) {
-      priorities.push(shiftedPrio);
-      prioIdx.push(prioIdx.shift());
-    } else {
-      answer++;
-      if (prioIdx.shift() === location) return answer;
-    }
-  }
+  return numbersToStr[0] === "0" ? "0" : numbersToStr.join("");
 }
