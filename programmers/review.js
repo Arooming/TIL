@@ -1,78 +1,41 @@
-// 더 맵게
-class MinHeap {
-  constructor() {
-    this.heap = [];
+// 소수 찾기
+function solution(numbers) {
+  function getPermutation(arr, selectNum) {
+    const result = [];
+    if (selectNum === 1) return arr.map((v) => [v]);
+
+    arr.forEach((fixed, index, origin) => {
+      const rest = [...origin.slice(0, index), ...origin.slice(index + 1)];
+      const permutation = getPermutation(rest, selectNum - 1);
+      const attached = permutation.map((perm) => [fixed, ...perm]);
+
+      result.push(...attached);
+    });
+
+    return result;
   }
 
-  size() {
-    return this.heap.length;
-  }
+  function checkPrimeNum(num) {
+    if (num < 2) return false;
 
-  peek() {
-    return this.heap[0];
-  }
-
-  push(value) {
-    this.heap.push(value);
-
-    let curIdx = this.heap.length - 1;
-
-    while (
-      curIdx > 0 &&
-      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
-    ) {
-      const temp = this.heap[curIdx];
-      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
-      this.heap[Math.floor((curIdx - 1) / 2)] = temp;
-
-      curIdx = Math.floor((curIdx - 1) / 2);
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) return false;
     }
+    return true;
   }
 
-  pop() {
-    if (this.heap.length === 0) return null;
-    if (this.heap.length === 1) return this.heap.pop();
+  const answer = new Set();
 
-    const minValue = this.heap[0];
-    this.heap[0] = this.heap.pop();
+  for (let i = 1; i <= numbers.length; i++) {
+    const permutation = [...getPermutation([...numbers], i)];
+    const primeNum = permutation.filter((perm) => {
+      return checkPrimeNum(+perm.join(""));
+    });
 
-    let curIdx = 0;
-
-    while (curIdx * 2 + 1 < this.heap.length) {
-      const minChildIdx =
-        curIdx * 2 + 2 < this.heap.length &&
-        this.heap[curIdx * 2 + 2] < this.heap[curIdx * 2 + 1]
-          ? curIdx * 2 + 2
-          : curIdx * 2 + 1;
-
-      if (this.heap[curIdx] < this.heap[minChildIdx]) break;
-
-      const temp = this.heap[curIdx];
-      this.heap[curIdx] = this.heap[minChildIdx];
-      this.heap[minChildIdx] = temp;
-
-      curIdx = minChildIdx;
-    }
-    return minValue;
-  }
-}
-
-function solution(scoville, K) {
-  const minHeap = new MinHeap();
-  let cnt = 0;
-
-  for (const sco of scoville) {
-    minHeap.push(sco);
+    primeNum.forEach((arr) => {
+      answer.add(+arr.join(""));
+    });
   }
 
-  while (minHeap.size() >= 2 && minHeap.peek() < K) {
-    const first = minHeap.pop();
-    const second = minHeap.pop();
-    const mixed = first + second * 2;
-
-    minHeap.push(mixed);
-    cnt++;
-  }
-
-  return minHeap.peek() < K ? -1 : cnt;
+  return answer.size;
 }
