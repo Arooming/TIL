@@ -1,41 +1,12 @@
-// 소수 찾기
-function solution(numbers) {
-  function getPermutation(arr, selectNum) {
-    const result = [];
-    if (selectNum === 1) return arr.map((v) => [v]);
+// 카펫
+function solution(brown, yellow) {
+  const result = brown + yellow;
 
-    arr.forEach((fixed, index, origin) => {
-      const rest = [...origin.slice(0, index), ...origin.slice(index + 1)];
-      const permutation = getPermutation(rest, selectNum - 1);
-      const attached = permutation.map((perm) => [fixed, ...perm]);
-
-      result.push(...attached);
-    });
-
-    return result;
-  }
-
-  function checkPrimeNum(num) {
-    if (num < 2) return false;
-
-    for (let i = 2; i <= Math.sqrt(num); i++) {
-      if (num % i === 0) return false;
+  for (let i = 2; i <= Math.sqrt(result); i++) {
+    if (result % i === 0) {
+      const x = i;
+      const y = result / x;
+      if ((x - 2) * (y - 2) === yellow) return x > y ? [x, y] : [y, x];
     }
-    return true;
   }
-
-  const answer = new Set();
-
-  for (let i = 1; i <= numbers.length; i++) {
-    const permutation = [...getPermutation([...numbers], i)];
-    const primeNum = permutation.filter((perm) => {
-      return checkPrimeNum(+perm.join(""));
-    });
-
-    primeNum.forEach((arr) => {
-      answer.add(+arr.join(""));
-    });
-  }
-
-  return answer.size;
 }
