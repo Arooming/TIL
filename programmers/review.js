@@ -1,12 +1,19 @@
-// 카펫
-function solution(brown, yellow) {
-  const result = brown + yellow;
+// 피로도
+function solution(k, dungeons) {
+  var answer = -1;
+  const visited = Array(dungeons.length).fill(0);
 
-  for (let i = 2; i <= Math.sqrt(result); i++) {
-    if (result % i === 0) {
-      const x = i;
-      const y = result / x;
-      if ((x - 2) * (y - 2) === yellow) return x > y ? [x, y] : [y, x];
+  dfs(k, 0);
+
+  function dfs(k, cnt) {
+    for (let i = 0; i < dungeons.length; i++) {
+      if (k >= dungeons[i][0] && !visited[i]) {
+        visited[i] = true;
+        dfs(k - dungeons[i][1], cnt + 1);
+        visited[i] = false;
+      }
     }
+    answer = Math.max(answer, cnt);
   }
+  return answer;
 }
