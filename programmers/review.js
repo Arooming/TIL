@@ -1,23 +1,15 @@
-// 모음 사전
-function solution(word) {
-  var answer = 0;
-  const str = "";
-  const result = [];
-  for (let i = 1; i <= 5; i++) {
-    dfs(str, i, result);
+// 체육복
+function solution(n, lost, reserve) {
+  let lost_student = lost.filter((l) => !reserve.includes(l)).sort();
+  const reserve_student = reserve.filter((r) => !lost.includes(r)).sort();
+  
+  for(let i = 0 ; i < n; i++) {
+      if(lost_student.includes(reserve_student[i] - 1)) {
+          lost_student = lost_student.filter((lost) => lost !== reserve_student[i] - 1);
+      } else if (lost_student.includes(reserve_student[i] + 1)) {
+          lost_student = lost_student.filter((lost) => lost !== reserve_student[i] + 1);
+      }
   }
-
-  function dfs(word, length, result) {
-    const vowels = [..."AEIOU"];
-    if (word.length === length) {
-      result.push(word);
-      return;
-    }
-
-    vowels.forEach((vowel) => {
-      dfs(word + vowel, length, result);
-    });
-  }
-
-  return result.sort().indexOf(word) + 1;
+  
+  return n - lost_student.length;
 }
