@@ -1,26 +1,16 @@
-// 조이스틱
-function solution(name) {
-  var answer = 0;
-  let minMove = name.length - 1;
+// 큰 수 만들기
+function solution(number, k) {
+  var answer = [];
 
-  const nameArr = [...name];
-
-  nameArr.map((nameChar, i) => {
-    answer += Math.min(
-      nameChar.charCodeAt() - "A".charCodeAt(),
-      "Z".charCodeAt() + 1 - nameChar.charCodeAt()
-    );
-
-    let idx = i + 1;
-    while (name[idx] === "A" && idx < name.length) {
-      idx++;
+  for (const i of number) {
+    while (k > 0 && answer[answer.length - 1] < i) {
+      answer.pop();
+      k--;
     }
+    answer.push(i);
+  }
 
-    minMove = Math.min(
-      minMove,
-      2 * i + (name.length - idx),
-      i + 2 * (name.length - idx)
-    );
-  });
-  return answer + minMove;
+  answer.splice(answer.length - k, k);
+
+  return answer.join("");
 }
