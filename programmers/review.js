@@ -1,16 +1,15 @@
-// 큰 수 만들기
-function solution(number, k) {
-  var answer = [];
+// 구명 보트
+function solution(people, limit) {
+  var answer = 0;
 
-  for (const i of number) {
-    while (k > 0 && answer[answer.length - 1] < i) {
-      answer.pop();
-      k--;
+  people.sort((a, b) => b - a);
+
+  for (var i = 0, j = people.length - 1; i <= j; i++) {
+    if (people[i] + people[j] <= limit) {
+      j--;
     }
-    answer.push(i);
+    answer++;
   }
 
-  answer.splice(answer.length - k, k);
-
-  return answer.join("");
+  return answer;
 }
