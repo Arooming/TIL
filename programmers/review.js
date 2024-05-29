@@ -1,14 +1,25 @@
-// 구명 보트
-function solution(people, limit) {
+// 네트워크
+function solution(n, computers) {
   var answer = 0;
+  const visited = Array(n).fill(0);
 
-  people.sort((a, b) => b - a);
-
-  for (var i = 0, j = people.length - 1; i <= j; i++) {
-    if (people[i] + people[j] <= limit) {
-      j--;
+  for (let i = 0; i < n; i++) {
+    if (!visited[i]) {
+      dfs(i);
+      answer++;
     }
-    answer++;
+  }
+
+  function dfs(node) {
+    if (visited[node]) {
+      return;
+    }
+
+    visited[node] = 1;
+
+    for (let i = 0; i < n; i++) {
+      if (computers[node][i] === 1) dfs(i);
+    }
   }
 
   return answer;
