@@ -1,24 +1,29 @@
-// 네트워크
-function solution(n, computers) {
+// 단어 변환
+function solution(begin, target, words) {
   var answer = 0;
-  const visited = Array(n).fill(0);
-  for (let i = 0; i < n; i++) {
-    if (!visited[i]) {
-      dfs(i);
-      answer++;
+  const visited = {};
+  const queue = [];
+
+  function checkWords(str1, str2) {
+    let cnt = 0;
+    for (let i = 0; i < str1.length; i++) {
+      if (str1[i] !== str2[i]) cnt++;
     }
+    return cnt === 1;
   }
 
-  function dfs(now) {
-    if (visited[now]) return;
+  visited[begin] = 0;
+  queue.push(begin);
 
-    visited[now] = 1;
-    for (let i = 0; i < computers.length; i++) {
-      if (computers[now][i] === 1) {
-        dfs(i);
+  while (queue.length) {
+    const cur = queue.shift();
+    for (let i = 0; i < words.length; i++) {
+      if (!visited[words[i]] && checkWords(words[i], cur)) {
+        queue.push(words[i]);
+        visited[words[i]] = visited[cur] + 1;
       }
     }
   }
 
-  return answer;
+  return visited[target] ? visited[target] : 0;
 }
