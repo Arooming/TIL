@@ -1,18 +1,24 @@
-// 타겟 넘버
-function solution(numbers, target) {
+// 네트워크
+function solution(n, computers) {
   var answer = 0;
-  dfs(0, 0);
-
-  function dfs(idx, sum) {
-    if (idx === numbers.length) {
-      if (sum === target) {
-        answer++;
-      }
-      return;
+  const visited = Array(n).fill(0);
+  for (let i = 0; i < n; i++) {
+    if (!visited[i]) {
+      dfs(i);
+      answer++;
     }
-
-    dfs(idx + 1, sum + numbers[idx]);
-    dfs(idx + 1, sum - numbers[idx]);
   }
+
+  function dfs(now) {
+    if (visited[now]) return;
+
+    visited[now] = 1;
+    for (let i = 0; i < computers.length; i++) {
+      if (computers[now][i] === 1) {
+        dfs(i);
+      }
+    }
+  }
+
   return answer;
 }
