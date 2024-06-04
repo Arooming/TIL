@@ -1,29 +1,78 @@
-// 단어 변환
-function solution(begin, target, words) {
-  var answer = 0;
-  const visited = {};
-  const queue = [];
-
-  function checkWords(str1, str2) {
-    let cnt = 0;
-    for (let i = 0; i < str1.length; i++) {
-      if (str1[i] !== str2[i]) cnt++;
-    }
-    return cnt === 1;
+// 더 맵게
+class MinHeap {
+  constructor() {
+    this.heap = [];
   }
 
-  visited[begin] = 0;
-  queue.push(begin);
+  size() {
+    return this.heap.length;
+  }
 
-  while (queue.length) {
-    const cur = queue.shift();
-    for (let i = 0; i < words.length; i++) {
-      if (!visited[words[i]] && checkWords(words[i], cur)) {
-        queue.push(words[i]);
-        visited[words[i]] = visited[cur] + 1;
-      }
+  peek() {
+    return this.heap[0];
+  }
+
+  push(value) {
+    this.heap.push(value);
+
+    let curIdx = this.heap.length - 1;
+    while (
+      curIdx > 0 &&
+      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
+    ) {
+      const temp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
+      this.heap[Math.floor((curIdx - 1) / 2)] = temp;
+
+      curIdx = Math.floor((curIdx - 1) / 2);
     }
   }
 
-  return visited[target] ? visited[target] : 0;
+  pop() {
+    if (this.heap.length === 0) return null;
+    if (this.heap.length === 1) return this.heap.pop();
+
+    const minValue = this.heap[0];
+    this.heap[0] = this.heap.pop();
+
+    let curIdx = 0;
+
+    while (curIdx * 2 + 1 < this.heap.length) {
+      const minChildIdx =
+        curIdx * 2 + 2 < this.heap.length &&
+        this.heap[curIdx * 2 + 1] > this.heap[curIdx * 2 + 2]
+          ? curIdx * 2 + 2
+          : curIdx * 2 + 1;
+
+      if (this.heap[minChildIdx] > this.heap[curIdx]) break;
+
+      const temp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[minChildIdx];
+      this.heap[minChildIdx] = temp;
+
+      curIdx = minChildIdx;
+    }
+
+    return minValue;
+  }
+}
+
+function solution(scoville, K) {
+  const minHeap = new MinHeap();
+  let cnt = 0;
+
+  for (const sco of scoville) {
+    minHeap.push(sco);
+  }
+
+  while (minHeap.size() >= 2 && minHeap.peek() < K) {
+    const first = minHeap.pop();
+    const second = minHeap.pop();
+    const mixed = first + second * 2;
+
+    minHeap.push(mixed);
+    cnt++;
+  }
+
+  return minHeap.peek() < K ? -1 : cnt;
 }
