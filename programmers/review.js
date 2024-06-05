@@ -1,15 +1,17 @@
-// 의상
-function solution(clothes) {
-  var answer = 1;
-  const obj = {};
+// 올바른 괄호
+// 예외 1: ')'가 먼저 들어온 경우
+// 예외 2: 스택을 다 돌았는데 스택에 문자열이 남아있는 경우
+function solution(s) {
+  const stack = [];
 
-  for (let i = 0; i < clothes.length; i++) {
-    obj[clothes[i][1]] = obj[clothes[i][1]] + 1 || 1;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      stack.push("(");
+    } else {
+      if (!stack.length) return false;
+      stack.pop();
+    }
   }
 
-  for (const key in obj) {
-    answer *= obj[key] + 1;
-  }
-
-  return answer - 1;
+  return stack.length === 0;
 }
