@@ -1,23 +1,27 @@
 // 프로세스
 function solution(priorities, location) {
-  let answer = 0;
-  let MAX = Math.max(...priorities);
-  const idx = priorities.map((_, idx) => idx);
+  var cnt = 0;
+  const obj = priorities.map((prio, idx) => {
+    return { prio, idx };
+  });
 
-  while (priorities) {
-    MAX = Math.max(...priorities);
+  while (obj.length) {
+    const MAX = Math.max(...priorities);
 
-    if (priorities[0] < MAX) {
-      priorities.push(priorities.shift());
-      idx.push(idx.shift());
+    const process = obj.shift();
+    const prio = priorities.shift();
+    if (process.prio < MAX) {
+      obj.push(process);
+      priorities.push(prio);
     } else {
-      answer += 1;
-      priorities.shift();
-      if (idx.shift() === location) {
-        return answer;
+      cnt++;
+      if (process.idx === location) {
+        return cnt;
       }
     }
   }
+
+  return cnt;
 }
 
 console.log(solution([2, 1, 3, 2], 2));
