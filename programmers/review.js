@@ -1,25 +1,17 @@
-// 프로세스
-function solution(priorities, location) {
-  var cnt = 0;
-  const obj = priorities.map((prio, idx) => {
-    return { prio, idx };
-  });
+// 주식 가격
+function solution(prices) {
+  var answer = [];
 
-  while (obj.length) {
-    const MAX = Math.max(...priorities);
-
-    const process = obj.shift();
-    const prio = priorities.shift();
-    if (process.prio < MAX) {
-      obj.push(process);
-      priorities.push(prio);
-    } else {
+  for (let i = 0; i < prices.length; i++) {
+    let cnt = 0;
+    for (let j = i + 1; j < prices.length; j++) {
       cnt++;
-      if (process.idx === location) {
-        return cnt;
+      if (prices[i] > prices[j]) {
+        break;
       }
     }
+    answer.push(cnt);
   }
 
-  return cnt;
+  return answer;
 }
