@@ -1,17 +1,76 @@
-// 주식 가격
-function solution(prices) {
-  var answer = [];
-
-  for (let i = 0; i < prices.length; i++) {
-    let cnt = 0;
-    for (let j = i + 1; j < prices.length; j++) {
-      cnt++;
-      if (prices[i] > prices[j]) {
-        break;
-      }
-    }
-    answer.push(cnt);
+// 더 맵게
+class MinHeap {
+  constructor() {
+    this.heap = [];
   }
 
-  return answer;
+  peek() {
+    return this.heap[0];
+  }
+
+  size() {
+    return this.heap.length;
+  }
+
+  push(value) {
+    this.heap.push(value);
+
+    let curIdx = this.heap.length - 1;
+    while (
+      curIdx > 0 &&
+      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
+    ) {
+      const temp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
+      this.heap[Math.floor((curIdx - 1) / 2)] = temp;
+
+      curIdx = Math.floor((curIdx - 1) / 2);
+    }
+  }
+
+  pop() {
+    if (this.heap.length === 0) return null;
+    if (this.heap.length === 1) return this.heap.pop();
+
+    let minValue = this.heap[0];
+    this.heap[0] = this.heap.pop();
+
+    let curIdx = 0;
+    while (curIdx * 2 + 1 < this.heap.length) {
+      const minChildIdx =
+        curIdx * 2 + 1 < curIdx * 2 + 2 &&
+        this.heap[curIdx * 2 + 2] < this.heap[curIdx * 2 + 1]
+          ? curIdx * 2 + 2
+          : curIdx * 2 + 1;
+
+      if (this.heap[minChildIdx] > this.heap[curIdx]) break;
+
+      const temp = this.heap[curIdx];
+      this.heap[curIdx] = this.heap[minChildIdx];
+      this.heap[minChildIdx] = temp;
+
+      curIdx = minChildIdx;
+    }
+
+    return minValue;
+  }
+}
+
+function solution(scoville, K) {
+  var answer = 0;
+  const minHeap = new MinHeap();
+
+  for (const sco of scoville) {
+    minHeap.push(sco);
+  }
+
+  while (minHeap.peek() < K && minHeap.size() >= 2) {
+    const first = minHeap.pop();
+    const second = minHeap.pop();
+    const mixed = first + second * 2;
+    minHeap.push(mixed);
+    answer++;
+  }
+
+  return minHeap.peek() < K ? -1 : answer;
 }
