@@ -1,13 +1,15 @@
-// 전화번호 목록
-function solution(phone_book) {
-  phone_book.sort();
+// 의상
+function solution(clothes) {
+  var answer = 1;
+  const obj = {};
 
-  for (let i = 0; i < phone_book.length - 1; i++) {
-    if (
-      phone_book[i + 1].substring(0, phone_book[i].length) === phone_book[i]
-    ) {
-      return false;
-    }
+  for (let i = 0; i < clothes.length; i++) {
+    obj[clothes[i][1]] = obj[clothes[i][1]] + 1 || 1;
   }
-  return true;
+
+  for (const key in obj) {
+    answer *= obj[key] + 1;
+  }
+
+  return answer - 1;
 }
