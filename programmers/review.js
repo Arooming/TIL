@@ -1,78 +1,13 @@
-// 더 맵게
-class MinHeap {
-  constructor() {
-    this.heap = [];
-  }
+// 전화번호 목록
+function solution(phone_book) {
+  phone_book.sort();
 
-  size() {
-    return this.heap.length;
-  }
-
-  peek() {
-    return this.heap[0];
-  }
-
-  push(value) {
-    this.heap.push(value);
-
-    let curIdx = this.heap.length - 1;
-    while (
-      curIdx > 0 &&
-      this.heap[curIdx] < this.heap[Math.floor((curIdx - 1) / 2)]
+  for (let i = 0; i < phone_book.length - 1; i++) {
+    if (
+      phone_book[i + 1].substring(0, phone_book[i].length) === phone_book[i]
     ) {
-      const temp = this.heap[curIdx];
-      this.heap[curIdx] = this.heap[Math.floor((curIdx - 1) / 2)];
-      this.heap[Math.floor((curIdx - 1) / 2)] = temp;
-
-      curIdx = Math.floor((curIdx - 1) / 2);
+      return false;
     }
   }
-
-  pop() {
-    if (this.heap.length === 0) return null;
-    if (this.heap.length === 1) return this.heap.pop();
-
-    const minValue = this.heap[0];
-    this.heap[0] = this.heap.pop();
-
-    let curIdx = 0;
-
-    while (curIdx * 2 + 1 < this.heap.length) {
-      const minChildIdx =
-        curIdx * 2 + 2 < this.heap.length &&
-        this.heap[curIdx * 2 + 1] > this.heap[curIdx * 2 + 2]
-          ? curIdx * 2 + 2
-          : curIdx * 2 + 1;
-
-      if (this.heap[minChildIdx] > this.heap[curIdx]) break;
-
-      const temp = this.heap[curIdx];
-      this.heap[curIdx] = this.heap[minChildIdx];
-      this.heap[minChildIdx] = temp;
-
-      curIdx = minChildIdx;
-    }
-
-    return minValue;
-  }
-}
-
-function solution(scoville, K) {
-  const minHeap = new MinHeap();
-  let cnt = 0;
-
-  for (const sco of scoville) {
-    minHeap.push(sco);
-  }
-
-  while (minHeap.size() >= 2 && minHeap.peek() < K) {
-    const first = minHeap.pop();
-    const second = minHeap.pop();
-    const mixed = first + second * 2;
-
-    minHeap.push(mixed);
-    cnt++;
-  }
-
-  return minHeap.peek() < K ? -1 : cnt;
+  return true;
 }
