@@ -1,23 +1,34 @@
-// 모음 사전
-function solution(word) {
-  let str = "";
-  const result = [];
+// 전력망을 둘로 나누기
+function solution(n, wires) {
+  var answer = Number.MAX_VALUE;
+  let cnt = 0;
 
-  function dfs(str, idx, result) {
-    const vowels = [..."AEIOU"];
-    if (str.length === idx) {
-      result.push(str);
-      return;
+  while (cnt !== wires.length) {
+    const cur = wires.shift();
+    answer = Math.min(answer, Math.abs(bfs(cur[0]) - bfs(cur[1])));
+    wires.push(cur);
+    cnt++;
+  }
+
+  function bfs(node) {
+    const needVisit = [node];
+    const visited = [];
+
+    while (needVisit.length) {
+      const curNode = needVisit.shift();
+      wires.forEach((wire) => {
+        if (wire.includes(curNode)) {
+          const other = curNode === wire[0] ? wire[1] : wire[0];
+          if (!visited.includes(other)) {
+            needVisit.push(other);
+          }
+        }
+      });
+      visited.push(curNode);
     }
 
-    vowels.forEach((vowel) => {
-      dfs(str + vowel, idx, result);
-    });
+    return visited.length;
   }
 
-  for (let i = 1; i <= 5; i++) {
-    dfs(str, i, result);
-  }
-
-  return result.sort().indexOf(word) + 1;
+  return answer;
 }
