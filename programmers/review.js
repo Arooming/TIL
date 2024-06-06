@@ -1,20 +1,16 @@
-// 다리를 지나는 트럭
-function solution(bridge_length, weight, truck_weights) {
-  var answer = 0;
-  const bridge = Array(bridge_length).fill(0);
-
-  while (bridge.length) {
-    bridge.shift();
-    if (truck_weights.length) {
-      const sum = bridge.reduce((a, b) => a + b, 0);
-      if (sum + truck_weights[0] <= weight) {
-        const go = truck_weights.shift();
-        bridge.push(go);
-      } else {
-        bridge.push(0);
+// 주식 가격
+function solution(prices) {
+  var answer = [];
+  
+  for (let i = 0; i < prices.length; i++) {
+      let cnt = 0;
+      for(let j = i + 1; j < prices.length; j ++) {
+          cnt ++;
+          if(prices[i] > prices[j]) {
+              break;
+          }
       }
-    }
-    answer++;
+      answer.push(cnt);
   }
   return answer;
 }
