@@ -1,34 +1,15 @@
-// 전력망을 둘로 나누기
-function solution(n, wires) {
-  var answer = Number.MAX_VALUE;
-  let cnt = 0;
+// 체육복
+function solution(n, lost, reserve) {
+  let lost_student = lost.filter((it) => !reserve.includes(it)).sort();
+  const reserve_student = reserve.filter((it) => !lost.includes(it)).sort();
 
-  while (cnt !== wires.length) {
-    const cur = wires.shift();
-    answer = Math.min(answer, Math.abs(bfs(cur[0]) - bfs(cur[1])));
-    wires.push(cur);
-    cnt++;
-  }
-
-  function bfs(node) {
-    const needVisit = [node];
-    const visited = [];
-
-    while (needVisit.length) {
-      const curNode = needVisit.shift();
-      wires.forEach((wire) => {
-        if (wire.includes(curNode)) {
-          const other = curNode === wire[0] ? wire[1] : wire[0];
-          if (!visited.includes(other)) {
-            needVisit.push(other);
-          }
-        }
-      });
-      visited.push(curNode);
+  for (let i = 0; i < n; i++) {
+    if (lost_student.includes(reserve_student[i] - 1)) {
+      lost_student = lost_student.filter((it) => it !== reserve_student[i] - 1);
+    } else if (lost_student.includes(reserve_student[i] + 1)) {
+      lost_student = lost_student.filter((it) => it !== reserve_student[i] + 1);
     }
-
-    return visited.length;
   }
 
-  return answer;
+  return n - lost_student.length;
 }
