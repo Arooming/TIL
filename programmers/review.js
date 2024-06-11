@@ -1,15 +1,15 @@
-// 체육복
-function solution(n, lost, reserve) {
-  let lost_student = lost.filter((it) => !reserve.includes(it)).sort();
-  const reserve_student = reserve.filter((it) => !lost.includes(it)).sort();
+// 구명보트
+function solution(people, limit) {
+  var answer = 0;
 
-  for (let i = 0; i < n; i++) {
-    if (lost_student.includes(reserve_student[i] - 1)) {
-      lost_student = lost_student.filter((it) => it !== reserve_student[i] - 1);
-    } else if (lost_student.includes(reserve_student[i] + 1)) {
-      lost_student = lost_student.filter((it) => it !== reserve_student[i] + 1);
+  people.sort((a, b) => b - a);
+
+  for (let i = 0, j = people.length - 1; i <= j; i++) {
+    if (people[i] + people[j] <= limit) {
+      j--;
     }
+    answer++;
   }
 
-  return n - lost_student.length;
+  return answer;
 }
