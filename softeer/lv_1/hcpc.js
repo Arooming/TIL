@@ -16,7 +16,7 @@ rl.on("close", () => {
   const sum = [];
 
   for (let i = 1; i <= N; i++) {
-    sum.push(arr[i][0] + arr[i][1]);
+    sum.push(arr[i][1]);
   }
 
   const idx = sum.indexOf(Math.min(...sum));
