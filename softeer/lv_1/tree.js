@@ -18,7 +18,7 @@ rl.on("close", () => {
 
   const answer = front_value > back_value ? front_value : back_value;
 
-  console.log(answer);
+  console.log(answer === 0 ? 0 : answer);
 
   process.exit();
 });
