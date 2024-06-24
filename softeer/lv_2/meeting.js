@@ -20,6 +20,7 @@ rl.on("line", (input) => {
 rl.on("close", () => {
   const N = parseInt(inputArr[0][0]);
   const M = parseInt(inputArr[0][1]);
+  const timeArr = [];
 
   const roomArr = new Array(N);
   // 회의 시간 0으로 초기화
@@ -51,44 +52,35 @@ rl.on("close", () => {
   }
 
   for (let i = 0; i < roomArr.length; i++) {
-    let timeArr = [];
-    let cnt = 1;
     let availableArr = [];
 
-    for (let j = 0; j < 9; j++) {
+    // 예약 가능 시간 저장
+    for (let j = 0; j < roomArr[i].length; j++) {
       if (roomArr[i][j] === 0) {
-        timeArr.push(j + 9);
+        if (j === 0 || roomArr[i][j - 1] === 1) {
+          availableArr.push(j + 9);
+        } else if (j === roomArr[i].length - 1) {
+          availableArr.push(j + 10);
+        }
+      } else {
+        if (roomArr[i][j - 1] === 0) {
+          availableArr.push(j + 9);
+        }
       }
     }
+    timeArr.push(availableArr);
 
     console.log(`Room ${nameArr[i][0]}:`);
-    if (!roomArr[i].includes(0)) {
+
+    if (!timeArr[i].length) {
       console.log("Not available");
     } else {
-      for (let k = 0; k < timeArr.length - 1; k++) {
-        if (Math.abs(timeArr[k] - timeArr[k + 1]) !== 1) {
-          cnt++;
-        }
+      console.log(`${availableArr.length / 2} available:`);
+      for (let t = 0; t < timeArr[i].length; t += 2) {
+        const startTime = String(timeArr[i][t]).padStart(2, 0);
+        const endTime = String(timeArr[i][t + 1]).padStart(2, 0);
+        console.log(`${startTime}-${endTime}`);
       }
-      console.log(`${cnt} available:`);
-
-      // 예약 가능 시간 출력
-      for (let t = 0; t < 9; t++) {
-        if ((t === 0 || roomArr[i][t - 1] === 1) && roomArr[i][t] === 0) {
-          availableArr.push(String(t + 9).padStart(2, 0));
-        } else if (roomArr[i][t] === 1 && roomArr[i][t - 1] === 0) {
-          availableArr.push(String(t + 9).padStart(2, 0));
-        } else if (t === 8 && roomArr[i][t] === 0) {
-          availableArr.push(t + 10);
-        }
-      }
-    }
-
-    for (let k = 0; k < availableArr.length; k += 2) {
-      let start = availableArr[k];
-      let end = availableArr[k + 1];
-
-      console.log(`${start}-${end}`);
     }
 
     if (i !== roomArr.length - 1) console.log("-----");
