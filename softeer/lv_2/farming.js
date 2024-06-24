@@ -32,7 +32,7 @@ rl.on("close", () => {
 
     if ((a === b) === c) {
       console.log(0);
-      return;
+      return; 
     } else {
       let tmp = calc(a, b, c);
       cnt = Math.min(cnt, tmp);

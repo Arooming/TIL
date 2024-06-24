@@ -47,7 +47,7 @@ rl.on("close", () => {
           }
         }
       }
-    }
+    } 
     answer.push(cnt);
   }
 
