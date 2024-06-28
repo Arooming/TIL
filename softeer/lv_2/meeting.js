@@ -1,8 +1,9 @@
-// 회의: 회의실(r), 시작 시각(s / hour), 종료 시각(t / hour)
-// 회의실 수: N, 예약된 회의의 수: M
-// 길이가 0인 회의(시작 시각 === 종료 시각) 없음
-// 이미 예약된 회의 개수: M개
-// 회의실 별로 비어 있는 시간대 출력 -> 회의실 이름 기준 오름차순 출력
+// N: 회의실 수, M: 예약된 회의의 수
+// 시작과 종료 시간이 동일한 회의는 없음
+// 이미 예약된 M개의 회의에 대한 정보가 주어지면, 회의실 별로 시간대를 정리해 출력하는 프로그램 작성
+// 회의실 이름: r, 시작 시각: s, 종료 시각: t
+// 회의 가능 시간: 09 ~ 18
+// 회의실 이름 오름차순 정렬
 
 const readline = require("readline");
 const rl = readline.createInterface({
@@ -10,80 +11,102 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-let inputArr = [];
+let input = "";
 
-rl.on("line", (input) => {
-  let meeting = input.split(" ");
-  inputArr = [...inputArr, meeting];
+rl.on("line", (line) => {
+  input += line + "\n";
 });
 
 rl.on("close", () => {
-  const N = parseInt(inputArr[0][0]);
-  const M = parseInt(inputArr[0][1]);
+  const inputArr = input
+    .trim()
+    .split("\n")
+    .map((line) => line.split(" "));
+
+  const N = +inputArr[0][0];
+  const M = +inputArr[0][1];
+  const roomName = inputArr
+    .slice(1, N + 1)
+    .map((name) => name.join(""))
+    .sort();
+  const reservation = inputArr.slice(N + 1);
+
+  // 예약된 시간 자체를 저장한 배열
   const timeArr = [];
 
-  const roomArr = new Array(N);
-  // 회의 시간 0으로 초기화
-  for (let i = 0; i < N; i++) {
-    roomArr[i] = new Array(9).fill(0);
-  }
+  // 전체 예약 가능/ 불가능 시간 정보가 저장된 배열
+  const totalTimetable = [];
 
-  const nameArr = new Array(N);
-  // 회의실 이름 배열에 넣기
-  for (let i = 0; i < N; i++) {
-    nameArr[i] = inputArr[i + 1];
-  }
-  // 회의실 이름 오름차순 정렬
-  nameArr.sort();
+  const result = [];
 
-  for (let i = N + 1; i <= N + M; i++) {
-    let roomName = 0;
-    for (; roomName < N; roomName++) {
-      if (nameArr[roomName][0] === inputArr[i][0]) {
-        break;
+  // 예약 불가능 시간 타임 테이블 생성
+  for (let i = 0; i < N; i++) {
+    const arr = [];
+
+    for (let j = 0; j < M; j++) {
+      const room = reservation[j][0];
+      const start = +reservation[j][1];
+      const end = +reservation[j][2];
+
+      if (room === roomName[i]) {
+        arr.push([start, end]);
       }
     }
-
-    let start = Number(inputArr[i][1]) - 9;
-    let end = Number(inputArr[i][2]) - 9;
-    for (; start < end; start++) {
-      roomArr[roomName][start] = 1;
-    }
+    arr.sort((a, b) => a[0] - b[0]);
+    timeArr.push(arr);
   }
 
-  for (let i = 0; i < roomArr.length; i++) {
-    let availableArr = [];
+  // 전체 예약 가능/ 불가능 시간 정보 저장
+  for (let i = 0; i < N; i++) {
+    const timetable = new Array(9).fill(0);
+    for (let j = 0; j < timeArr[i].length; j++) {
+      const start = timeArr[i][j][0] - 9;
+      const end = timeArr[i][j][1] - 9;
 
-    // 예약 가능 시간 저장
-    for (let j = 0; j < roomArr[i].length; j++) {
-      if (roomArr[i][j] === 0) {
-        if (j === 0 || roomArr[i][j - 1] === 1) {
-          availableArr.push(j + 9);
-        } else if (j === roomArr[i].length - 1) {
-          availableArr.push(j + 10);
+      for (k = start; k < end; k++) {
+        timetable[k] = 1;
+      }
+    }
+    totalTimetable.push(timetable);
+  }
+
+  for (let i = 0; i < N; i++) {
+    const arr = [];
+    for (let j = 0; j < 9; j++) {
+      if (totalTimetable[i][j] === 0) {
+        if (j === 0 || totalTimetable[i][j - 1] === 1) {
+          arr.push(j + 9);
         }
       } else {
-        if (roomArr[i][j - 1] === 0) {
-          availableArr.push(j + 9);
+        if (j > 0 && totalTimetable[i][j - 1] === 0) {
+          arr.push(j + 9);
         }
       }
     }
-    timeArr.push(availableArr);
+    if (totalTimetable[i][8] === 0) {
+      arr.push(18);
+    }
+    result.push(arr);
+  }
 
-    console.log(`Room ${nameArr[i][0]}:`);
-
-    if (!timeArr[i].length) {
+  // 출력
+  for (let i = 0; i < N; i++) {
+    console.log(`Room ${roomName[i]}:`);
+    if (result[i].length === 0) {
       console.log("Not available");
     } else {
-      console.log(`${availableArr.length / 2} available:`);
-      for (let t = 0; t < timeArr[i].length; t += 2) {
-        const startTime = String(timeArr[i][t]).padStart(2, 0);
-        const endTime = String(timeArr[i][t + 1]).padStart(2, 0);
-        console.log(`${startTime}-${endTime}`);
-      }
+      console.log(`${result[i].length / 2} available:`);
     }
 
-    if (i !== roomArr.length - 1) console.log("-----");
+    for (let j = 0; j < result[i].length - 1; j += 2) {
+      const start = String(result[i][j]).padStart(2, 0);
+      const end = String(result[i][j + 1]).padStart(2, 0);
+
+      console.log(`${start}-${end}`);
+    }
+    if (i !== N - 1) {
+      console.log("-----");
+    }
   }
 
   process.exit();
